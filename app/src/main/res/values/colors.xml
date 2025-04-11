@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Basic Colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Theme Colors -->
+    <color name="primary">#082E6C</color>
+    <color name="primary_dark">#061F4D</color>
+    <color name="primary_light">#3B5FA3</color>
+
+    <!-- Secondary Theme Colors -->
+    <color name="secondary">#F5A623</color>
+    <color name="secondary_dark">#C47F00</color>
+    <color name="secondary_light">#FFD27A</color>
+
+    <!-- Accent / Tertiary Colors -->
+    <color name="accent">#2ECC71</color> <!-- soft green -->
+    <color name="accent_dark">#27AE60</color>
+    <color name="accent_light">#A3E4D7</color>
+
+    <!-- Background Colors -->
+    <color name="background">#F4F6F8</color>
+    <color name="surface">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#9E9E9E</color>
+
+    <!-- Error / Warning -->
+    <color name="error">#D32F2F</color>
+    <color name="warning">#FFA000</color>
+    <color name="success">#388E3C</color>
+    <color name="info">#1976D2</color>
+</resources>
