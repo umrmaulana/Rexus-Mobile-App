@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:background="#072F6C"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="Rexus Store"
+            app:title="@string/app_name"
             app:titleTextColor="@android:color/white"
             tools:layout_editor_absoluteX="43dp">
 

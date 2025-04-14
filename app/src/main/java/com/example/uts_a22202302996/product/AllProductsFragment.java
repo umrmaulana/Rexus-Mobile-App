@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,10 +26,12 @@ public class AllProductsFragment extends Fragment {
     private TextView textViewEmpty;
     private ProductAdapter productAdapter;
     private HomeViewModel homeViewModel;
+    private SearchView searchView;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.product_fragment, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -40,6 +43,7 @@ public class AllProductsFragment extends Fragment {
 
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
+        // Observe LiveData dari ViewModel
         homeViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
             if (products == null || products.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
@@ -51,6 +55,13 @@ public class AllProductsFragment extends Fragment {
             }
         });
 
+        homeViewModel.fetchAllProducts("");
+        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            if (query != null) {
+                homeViewModel.fetchAllProducts(query);
+            }
+        });
+
         homeViewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
                 textViewEmpty.setText("Gagal memuat data produk");
@@ -59,7 +70,15 @@ public class AllProductsFragment extends Fragment {
             }
         });
 
-        homeViewModel.fetchProducts(""); // Fetch all products (no category filter)
+        // Fetch all products initially
+        homeViewModel.fetchAllProducts("");
+
+        // Observe search query
+        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            if (query != null) {
+                homeViewModel.fetchAllProducts(query);
+            }
+        });
 
         return view;
     }

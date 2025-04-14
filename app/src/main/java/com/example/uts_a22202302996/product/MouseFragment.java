@@ -39,10 +39,10 @@ public class MouseFragment extends Fragment {
         recyclerView.setAdapter(productAdapter);
 
         // Inisialisasi ViewModel
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         // Observe LiveData dari ViewModel
-        homeViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
+        homeViewModel.getMouseProducts().observe(getViewLifecycleOwner(), products -> {
             if (products == null || products.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 textViewEmpty.setVisibility(View.VISIBLE);
@@ -50,6 +50,13 @@ public class MouseFragment extends Fragment {
                 textViewEmpty.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 productAdapter.setProductList(products);
+            }
+        });
+
+        homeViewModel.fetchMouseProducts("");
+        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            if (query != null) {
+                homeViewModel.fetchMouseProducts(query);
             }
         });
 
@@ -61,8 +68,15 @@ public class MouseFragment extends Fragment {
             }
         });
 
-        // Panggil API untuk kategori keyboard
-        homeViewModel.fetchProducts("mouse");
+        // Fetch all products initially
+        homeViewModel.fetchMouseProducts("");
+
+        // Observe search query
+        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            if (query != null) {
+                homeViewModel.fetchMouseProducts(query);
+            }
+        });
 
         return view;
     }

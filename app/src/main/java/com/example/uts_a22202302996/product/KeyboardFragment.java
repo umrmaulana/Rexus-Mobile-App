@@ -39,10 +39,10 @@ public class KeyboardFragment extends Fragment {
         recyclerView.setAdapter(productAdapter);
 
         // Inisialisasi ViewModel
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
         // Observe LiveData dari ViewModel
-        homeViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
+        homeViewModel.getKeyboardProducts().observe(getViewLifecycleOwner(), products -> {
             if (products == null || products.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 textViewEmpty.setVisibility(View.VISIBLE);
@@ -50,6 +50,13 @@ public class KeyboardFragment extends Fragment {
                 textViewEmpty.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 productAdapter.setProductList(products);
+            }
+        });
+
+        homeViewModel.fetchKeyboardProducts("");
+        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            if (query != null) {
+                homeViewModel.fetchKeyboardProducts(query);
             }
         });
 
@@ -61,8 +68,15 @@ public class KeyboardFragment extends Fragment {
             }
         });
 
-        // Panggil API untuk kategori keyboard
-        homeViewModel.fetchProducts("keyboard");
+        // Fetch all products initially
+        homeViewModel.fetchKeyboardProducts("");
+
+        // Observe search query
+        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            if (query != null) {
+                homeViewModel.fetchKeyboardProducts(query);
+            }
+        });
 
         return view;
     }

@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.OptIn;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
@@ -19,48 +20,53 @@ import com.example.uts_a22202302996.product.AllProductsFragment;
 import com.example.uts_a22202302996.product.HeadsetFragment;
 import com.example.uts_a22202302996.product.KeyboardFragment;
 import com.example.uts_a22202302996.product.MouseFragment;
-import com.google.android.material.badge.BadgeUtils;
-import com.google.android.material.badge.ExperimentalBadgeUtils;
 import com.google.android.material.tabs.TabLayout;
 
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding; // Binding untuk mengakses komponen UI
-    private ViewPagerAdapter viewPagerAdapter; // Adapter untuk mengelola fragment di ViewPager
+    private FragmentHomeBinding binding;
+    private ViewPagerAdapter viewPagerAdapter;
 
-    @OptIn(markerClass = ExperimentalBadgeUtils.class)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inisialisasi ViewModel
-        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
-        // Inflate layout menggunakan ViewBinding
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Mengatur ViewPager dan TabLayout
         setupViewPager();
+
+        HomeViewModel homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+
+        Toolbar toolbar = binding.header.findViewById(R.id.toolbar); // Use androidx.appcompat.widget.Toolbar
+        SearchView searchView = toolbar.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                homeViewModel.setSearchQuery(query); // Update search query in ViewModel
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                homeViewModel.setSearchQuery(newText); // Enable live search
+                return true;
+            }
+        });
 
         return root;
     }
 
-    /**
-     * Mengatur ViewPager dengan fragment dan TabLayout.
-     */
     private void setupViewPager() {
         TabLayout tabLayout = binding.tabLayout;
         ViewPager viewPager = binding.viewPager;
 
-        // Inisialisasi ViewPagerAdapter dan menambahkan fragment
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(new AllProductsFragment(), "All");
         viewPagerAdapter.addFragment(new KeyboardFragment(), "Keyboard");
         viewPagerAdapter.addFragment(new MouseFragment(), "Mouse");
         viewPagerAdapter.addFragment(new HeadsetFragment(), "Headset");
 
-        // Mengatur adapter ke ViewPager dan menghubungkannya dengan TabLayout
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -68,6 +74,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null; // Hindari memory leak dengan menghapus binding
+        binding = null;
     }
 }

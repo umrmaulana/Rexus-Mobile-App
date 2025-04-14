@@ -45,5 +45,6 @@ public interface RegisterAPI {
     );
 
     @GET("get_product.php")
-    Call<ProductResponse> getProducts(@Query("kategori") String kategori);
+    Call<ProductResponse> getProducts(@Query("kategori") String kategori,
+                                      @Query("search") String search);
 }
