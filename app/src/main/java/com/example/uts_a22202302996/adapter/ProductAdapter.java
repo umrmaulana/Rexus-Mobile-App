@@ -1,5 +1,7 @@
 package com.example.uts_a22202302996.adapter;
 
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,7 +60,35 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         // Set data ke tampilan
         holder.textViewMerk.setText(product.getMerk());
-        holder.textViewHargaJual.setText(formatRupiah(product.getHargaJual()));
+
+        // Format harga
+        String hargaJual = formatRupiah(String.valueOf(product.getHargaJual()));
+        String hargaPokok = formatRupiah(String.valueOf(product.getHargapokok()));
+
+        // Cek diskon
+        if (product.getDiskonJual() > 0) {
+            // Tampilkan harga asli dengan coretan dan harga diskon
+            holder.textViewHargaJual.setPaintFlags(holder.textViewHargaJual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.textViewHargaJual.setTextSize(16);
+            holder.textViewHargaJual.setTypeface(null, Typeface.NORMAL);
+            holder.textViewHargaJual.setText(hargaPokok);
+            holder.textViewHargaJualDiskon.setVisibility(View.VISIBLE);
+            holder.textViewHargaJualDiskon.setText(hargaJual);
+        } else {
+            // Tanpa diskon
+            holder.textViewHargaJual.setPaintFlags(holder.textViewHargaJual.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.textViewHargaJual.setText(hargaJual);
+            holder.textViewHargaJualDiskon.setVisibility(View.GONE);
+        }
+
+        // Cek stok (Sold Out)
+        if (product.getStok() <= 0) {
+            holder.imageViewStatus.setVisibility(View.VISIBLE);
+            holder.imageViewProduct.setAlpha(0.5f); // Reduce opacity
+        } else {
+            holder.imageViewStatus.setVisibility(View.GONE);
+            holder.imageViewProduct.setAlpha(1.0f);
+        }
 
         // Load gambar menggunakan Glide
         Glide.with(fragment.getContext())
@@ -80,15 +111,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     // ViewHolder untuk menyimpan referensi elemen UI
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageViewProduct;
-        TextView textViewMerk;
-        TextView textViewHargaJual;
+        ImageView imageViewProduct, imageViewStatus;
+        TextView textViewMerk, textViewHargaJual, textViewHargaJualDiskon;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewProduct = itemView.findViewById(R.id.imageViewProduct);
+            imageViewStatus = itemView.findViewById(R.id.imageViewStatus);
             textViewMerk = itemView.findViewById(R.id.textViewMerk);
             textViewHargaJual = itemView.findViewById(R.id.textViewHargaJual);
+            textViewHargaJualDiskon = itemView.findViewById(R.id.textViewHargaJualDiskon);
         }
     }
 

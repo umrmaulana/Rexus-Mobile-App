@@ -23,13 +23,13 @@ public class Product {
     private String kategori;
 
     @SerializedName("hargabeli")
-    private String hargaBeli;
+    private Double hargaBeli;
 
     @SerializedName("hargajual")
-    private String hargaJual;
+    private Double hargaJual;
 
     @SerializedName("stok")
-    private String stok;
+    private Integer stok;
 
     @SerializedName("foto")
     private String foto;
@@ -37,12 +37,24 @@ public class Product {
     @SerializedName("deskripsi")
     private String deskripsi;
 
+    @SerializedName("diskonjual")
+    private Integer diskonJual;
+
+    @SerializedName("diskonbeli")
+    private Integer diskonBeli;
+
+    @SerializedName("hargapokok")
+    private Double hargaPokok;
+
     public String getKode() { return kode; }
     public String getMerk() { return merk; }
     public String getKategori() { return kategori; }
-    public String getHargaBeli() { return hargaBeli; }
-    public String getHargaJual() { return hargaJual; }
-    public String getStok() { return stok; }
+    public Double getHargaBeli() { return hargaBeli != null ? hargaBeli : 0; }
+    public Double getHargaJual() { return hargaJual != null ? hargaJual : 0; }
+    public int getStok() { return stok; }
     public String getFoto() { return foto; }
     public String getDeskripsi() { return deskripsi; }
+    public int getDiskonJual() { return diskonJual != null ? diskonJual : 0; }
+    public int getDiskonBeli() { return diskonBeli != null ? diskonBeli : 0; }
+    public Double getHargapokok() { return hargaPokok != null ? hargaPokok : 0; }
 }

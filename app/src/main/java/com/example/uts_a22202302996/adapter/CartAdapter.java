@@ -1,6 +1,8 @@
 package com.example.uts_a22202302996.adapter;
 
 import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -31,16 +34,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         this.listProduct = listProduct;
     }
 
-    // Format angka ke bentuk rupiah
-    private String formatRupiah(String harga) {
-        try {
-            double hargaDouble = Double.parseDouble(harga);
-            NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
-            return formatRupiah.format(hargaDouble).replace(",00", "");
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return "Rp. 0";
-        }
+    // In CartFragment
+    private String formatRupiah(double harga) {
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+        return formatRupiah.format(harga).replace(",00", "");
     }
 
     @NonNull
@@ -56,41 +53,61 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = listProduct.get(position);
 
-        // Tampilkan gambar produk
+        // Get prices with null safety
+        double hargaJual = product.getHargaJual();
+        double hargaPokok = product.getHargapokok();
+        double totalHarga = hargaJual * product.getQty();
+
+        // Load product image
         Glide.with(holder.itemView.getContext())
                 .load(product.getFoto())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageViewProduct);
 
-        holder.tvProduct.setText(product.getMerk());
-
-        // Hitung harga total per produk
-        int hargaJual = Integer.parseInt(product.getHargaJual());
-        holder.tvPrice.setText(formatRupiah(String.valueOf(hargaJual * product.getQty())));
+        // Set product name and quantity
+        holder.tvProduct.setText(product.getMerk() != null ? product.getMerk() : "");
         holder.tvQty.setText(String.valueOf(product.getQty()));
 
-        // Tombol tambah quantity
+        // Handle price display based on discount
+        if (product.getDiskonJual() > 0) {
+            // Show original price with strike-through
+            holder.tvPrice.setPaintFlags(holder.tvPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tvPrice.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error));
+            holder.tvPrice.setTextSize(14f);
+            holder.tvPrice.setText(formatRupiah(hargaPokok * product.getQty()));
+
+            // Show discounted price
+            holder.tvHargaDiskon.setVisibility(View.VISIBLE);
+            holder.tvHargaDiskon.setText(formatRupiah(totalHarga));
+            holder.tvHargaDiskon.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.primary));
+            holder.tvHargaDiskon.setTextSize(16f);
+            holder.tvHargaDiskon.setTypeface(null, Typeface.BOLD);
+        } else {
+            // No discount - show only original price
+            holder.tvPrice.setPaintFlags(holder.tvPrice.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.tvPrice.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.primary));
+            holder.tvPrice.setTextSize(16f);
+            holder.tvPrice.setTypeface(null, Typeface.BOLD);
+            holder.tvPrice.setText(formatRupiah(totalHarga));
+            holder.tvHargaDiskon.setVisibility(View.GONE);
+        }
+
         holder.btnPlus.setOnClickListener(v -> {
             product.setQty(product.getQty() + 1);
-            holder.tvQty.setText(String.valueOf(product.getQty()));
-            holder.tvPrice.setText(formatRupiah(String.valueOf(hargaJual * product.getQty())));
+            notifyItemChanged(position); // Update the item display
             updateSharedPreferences(v, listProduct);
             notifyCartTotalChanged();
             notifyCartQtyChanged();
         });
 
-        // Tombol kurangi quantity
         holder.btnMinus.setOnClickListener(v -> {
             if (product.getQty() > 1) {
                 product.setQty(product.getQty() - 1);
-                holder.tvQty.setText(String.valueOf(product.getQty()));
-                holder.tvPrice.setText(formatRupiah(String.valueOf(hargaJual * product.getQty())));
+                notifyItemChanged(position); // Update the item display
                 updateSharedPreferences(v, listProduct);
                 notifyCartTotalChanged();
                 notifyCartQtyChanged();
-            } else {
-                Toast.makeText(v.getContext(), "Minimal quantity 1", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -139,7 +156,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     // ViewHolder class untuk item keranjang
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvProduct, tvPrice, tvQty;
+        TextView tvProduct, tvPrice, tvHargaDiskon, tvQty;
         ImageButton btnDelete;
         Button btnPlus, btnMinus;
         ImageView imageViewProduct;
@@ -148,6 +165,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             super(itemView);
             tvProduct = itemView.findViewById(R.id.tvProduct);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvHargaDiskon = itemView.findViewById(R.id.tvHargaDiskon); // Add this
             tvQty = itemView.findViewById(R.id.tvQty);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnPlus = itemView.findViewById(R.id.btnPlus);
@@ -169,11 +187,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     public void notifyCartTotalChanged() {
         if (cartChangedListener != null) {
-            int total = 0;
+            double total = 0;
             for (Product p : listProduct) {
-                total += Integer.parseInt(p.getHargaJual()) * p.getQty();
+                total += p.getHargaJual() * p.getQty();
             }
-            cartChangedListener.onCartTotalChanged(total);
+            cartChangedListener.onCartTotalChanged((int) total);
         }
     }
 

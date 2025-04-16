@@ -23,6 +23,37 @@
     <color name="primary_light">#6E3DA0</color> <!-- Lebih terang dari primary -->
     <color name="primary_dark">#3A1453</color> <!-- Lebih gelap dari primary -->
 
+    <color name="divider">#E0E0E0</color> <!-- Warna untuk garis pemisah -->
+    <color name="card_background">#FFFFFF</color> <!-- Warna latar belakang kartu -->
+    <color name="button_background">#FFC50A</color> <!-- Warna latar belakang tombol -->
+    <color name="button_text">#FFFFFF</color> <!-- Warna teks pada tombol -->
+    <color name="link">#1E88E5</color> <!-- Warna untuk tautan -->
+    <color name="link_pressed">#0D47A1</color> <!-- Warna tautan saat ditekan -->
+    <color name="error_background">#FFEBEE</color> <!-- Warna latar belakang untuk kesalahan -->
+    <color name="error_text">#B00020</color> <!-- Warna teks untuk kesalahan -->
+    <color name="success_background">#E8F5E9</color> <!-- Warna latar belakang untuk sukses -->
+    <color name="success_text">#388E3C</color> <!-- Warna teks untuk sukses -->
+    <color name="warning_background">#FFF3E0</color> <!-- Warna latar belakang untuk peringatan -->
+    <color name="warning_text">#FF9800</color> <!-- Warna teks untuk peringatan -->
+    <color name="info_background">#E3F2FD</color> <!-- Warna latar belakang untuk info -->
+    <color name="info_text">#2196F3</color> <!-- Warna teks untuk info -->
+    <color name="disabled_background">#BDBDBD</color> <!-- Warna latar belakang untuk elemen yang dinonaktifkan -->
+    <color name="disabled_text">#9E9E9E</color> <!-- Warna teks untuk elemen yang dinonaktifkan -->
+    <color name="selected_background">#E0F7FA</color> <!-- Warna latar belakang untuk elemen yang dipilih -->
+    <color name="selected_text">#00796B</color> <!-- Warna teks untuk elemen yang dipilih -->
+    <color name="highlight">#FF4081</color> <!-- Warna sorotan -->
+    <color name="shadow">#000000</color> <!-- Warna bayangan -->
+    <color name="accent">#FF4081</color> <!-- Warna aksen -->
+    <color name="status_bar">#3A1453</color> <!-- Warna bilah status -->
+    <color name="navigation_bar">#3A1453</color> <!-- Warna bilah navigasi -->
+    <color name="toolbar_background">#3A1453</color> <!-- Warna latar belakang toolbar -->
+    <color name="toolbar_title">#FFFFFF</color> <!-- Warna judul toolbar -->
+    <color name="toolbar_icon">#FFFFFF</color> <!-- Warna ikon toolbar -->
+    <color name="fab_background">#FF4081</color> <!-- Warna latar belakang FAB -->
+    <color name="fab_icon">#FFFFFF</color> <!-- Warna ikon FAB -->
+    <color name="switch_thumb">#FFFFFF</color> <!-- Warna tombol switch -->
+    <color name="switch_track">#BDBDBD</color> <!-- Warna trek switch -->
+    <color name="surface_variant">#E0E0E0</color> <!-- Warna permukaan varian -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 </resources>

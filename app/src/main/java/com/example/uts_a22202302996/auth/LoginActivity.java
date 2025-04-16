@@ -120,12 +120,17 @@ public class LoginActivity extends AppCompatActivity {
                             // Ambil data dari response
                             String nama = json.getJSONObject("data").getString("nama");
                             String username = json.getJSONObject("data").getString("username");
+                            String email = json.getJSONObject("data").getString("email");
+                            String foto = json.getJSONObject("data").getString("foto");
 
                             // Simpan data login ke SharedPreferences
+                            SharedPreferences sharedPreferences = getSharedPreferences("login_session", MODE_PRIVATE);
                             editor = sharedPreferences.edit();
                             editor.putBoolean("isLoggedIn", true);
                             editor.putString("username", username);
                             editor.putString("nama", nama);
+                            editor.putString("email", email);
+                            editor.putString("foto", foto);
                             editor.apply();
 
                             Toast.makeText(LoginActivity.this, "Login Berhasil", Toast.LENGTH_SHORT).show();
