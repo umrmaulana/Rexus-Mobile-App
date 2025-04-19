@@ -38,7 +38,7 @@ public class AllProductsFragment extends Fragment {
         textViewEmpty = view.findViewById(R.id.textViewEmpty);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        productAdapter = new ProductAdapter(this, new ArrayList<>());
+        productAdapter = new ProductAdapter(AllProductsFragment.this, new ArrayList<>());
         recyclerView.setAdapter(productAdapter);
 
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);

@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@android:color/transparent"
                         android:scaleType="center"
-                        android:src="@drawable/delete"
+                        android:src="@drawable/ic_delete"
                         app:tint="@color/error"
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 

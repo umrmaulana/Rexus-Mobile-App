@@ -2,7 +2,9 @@ package com.example.uts_a22202302996.product;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private int qty = 1;
 
     public int getQty() {

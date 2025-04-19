@@ -34,8 +34,10 @@
 
         <!-- Control highlights -->
         <item name="colorControlHighlight">@color/primary_light</item>
+
     </style>
 
     <!-- Apply theme to your app -->
     <style name="Theme.UTS_A22202302996" parent="Base.Theme.UTS_A22202302996" />
+
 </resources>

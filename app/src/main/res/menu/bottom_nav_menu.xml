@@ -5,17 +5,17 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_home"
         android:title="@string/title_Home" />
 
     <item
         android:id="@+id/navigation_cart"
-        android:icon="@drawable/cart"
+        android:icon="@drawable/ic_cart"
         android:title="@string/title_Cart" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/user"
+        android:icon="@drawable/ic_user"
         android:title="@string/title_Profile" />
 
 </menu>

@@ -22,4 +22,15 @@
         android:name="com.example.uts_a22202302996.ui.profile.ProfileFragment"
         android:label="@string/title_Profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.example.uts_a22202302996.product.ProductDetailFragment"
+        android:label="Product Detail"
+        tools:layout="@layout/fragment_product_detail">
+        <argument
+            android:name="ARG_PRODUCT"
+            app:argType="com.example.uts_a22202302996.product.Product" />
+    </fragment>
+
 </navigation>

@@ -16,11 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.R;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.example.uts_a22202302996.product.Product;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,14 +30,20 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ProductDetailDialog extends BottomSheetDialogFragment {
+public class ProductDetailFragment extends Fragment {
+
+    private static final String ARG_PRODUCT = "product";
 
     private ArrayList<Product> listcart;
     private SharedPreferences sharedPreferences;
     private Product product;
 
-    public ProductDetailDialog(Product product) {
-        this.product = product;
+    public static ProductDetailFragment newInstance(Product product) {
+        ProductDetailFragment fragment = new ProductDetailFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_PRODUCT, product);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     private String formatRupiah(String harga) {
@@ -53,17 +60,30 @@ public class ProductDetailDialog extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_product_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
 
-        sharedPreferences = requireActivity().getSharedPreferences("product", MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences("product", MODE_PRIVATE);
+
+        // Retrieve the product object from arguments
+        if (getArguments() != null) {
+            product = (Product) getArguments().getSerializable("product");
+        }
+
+        if (product == null) {
+            Toast.makeText(requireContext(), "Product data is missing", Toast.LENGTH_SHORT).show();
+            return view;
+        }
+
+        // Initialize cart list
         listcart = new ArrayList<>();
 
+        // Check if cart data exists in SharedPreferences
         if (sharedPreferences.contains("listproduct")) {
             Gson gson = new Gson();
             String jsonText = sharedPreferences.getString("listproduct", null);
-            Product[] carts = gson.fromJson(jsonText, Product[].class);
-            for (Product cart : carts) {
-                listcart.add(cart);
+            if (jsonText != null) {
+                Type type = new TypeToken<ArrayList<Product>>() {}.getType();
+                listcart = gson.fromJson(jsonText, type);
             }
         }
 
@@ -77,7 +97,12 @@ public class ProductDetailDialog extends BottomSheetDialogFragment {
         TextView textViewStok = view.findViewById(R.id.textViewStokDetail);
         TextView textViewDiscountBadge = view.findViewById(R.id.textViewDiscountBadge);
         ImageButton imageButtonCart = view.findViewById(R.id.imageButtonCart);
-        Button buttonClose = view.findViewById(R.id.buttonClose);
+        ImageButton imageButtonBack = view.findViewById(R.id.imageButtonBack);
+        imageButtonBack.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+        });
 
         // Set product data
         Glide.with(requireContext()).load(product.getFoto()).into(imageView);
@@ -112,6 +137,7 @@ public class ProductDetailDialog extends BottomSheetDialogFragment {
             textViewHargaDiskon.setTextSize(18f); // Larger size for discounted price
             textViewHargaDiskon.setTypeface(null, android.graphics.Typeface.BOLD);
             textViewDiscountBadge.setVisibility(View.VISIBLE);
+            imageButtonBack.setVisibility(View.VISIBLE);
 
         } else {
             // No discount - show only original price
@@ -122,6 +148,7 @@ public class ProductDetailDialog extends BottomSheetDialogFragment {
             textViewHarga.setText(formatRupiah(String.valueOf(product.getHargaJual())));
             textViewHargaDiskon.setVisibility(View.GONE);
             textViewDiscountBadge.setVisibility(View.GONE);
+            imageButtonBack.setVisibility(View.VISIBLE);
         }
 
         imageButtonCart.setOnClickListener(v -> {
@@ -168,8 +195,6 @@ public class ProductDetailDialog extends BottomSheetDialogFragment {
 
             Toast.makeText(requireContext(), "Produk ditambahkan ke keranjang", Toast.LENGTH_SHORT).show();
         });
-
-        buttonClose.setOnClickListener(v -> dismiss());
 
         return view;
     }

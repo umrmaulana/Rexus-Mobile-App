@@ -11,6 +11,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.uts_a22202302996.databinding.ActivityMainBinding;
 import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.product.ProductDetailFragment;
+import com.example.uts_a22202302996.ui.home.HomeFragment;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -36,6 +38,42 @@ public class MainActivity extends AppCompatActivity {
 
         // Inisialisasi dan perbarui badge keranjang
         updateCartBadge();
+
+        // Handle intent data
+        if (getIntent() != null && getIntent().hasExtra("selected_products")) {
+            ArrayList<Product> selectedProducts = (ArrayList<Product>) getIntent().getSerializableExtra("selected_products");
+            String navigateTo = getIntent().getStringExtra("navigate_to");
+
+            if ("home".equals(navigateTo)) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("selected_products", selectedProducts);
+
+                HomeFragment homeFragment = new HomeFragment();
+                homeFragment.setArguments(bundle);
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.nav_host_fragment_activity_main, homeFragment)
+                        .commit();
+            }
+        }
+
+        //  handle search intent
+        if (getIntent() != null && getIntent().hasExtra("product")) {
+            Product product = (Product) getIntent().getSerializableExtra("product");
+            if (product != null) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("product", product);
+
+                ProductDetailFragment productDetailFragment = new ProductDetailFragment();
+                productDetailFragment.setArguments(bundle);
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.nav_host_fragment_activity_main, productDetailFragment)
+                        .commit();
+            }
+        }
     }
 
     /**
