@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
 
         HomeViewModel homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
 
-        Toolbar toolbar = binding.header.findViewById(R.id.toolbar); // Use androidx.appcompat.widget.Toolbar
+        Toolbar toolbar = binding.header.findViewById(R.id.toolbar);
         SearchView searchView = toolbar.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

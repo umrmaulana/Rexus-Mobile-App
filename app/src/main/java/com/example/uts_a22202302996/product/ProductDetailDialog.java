@@ -102,11 +102,11 @@ public class ProductDetailDialog extends BottomSheetDialogFragment {
             textViewHarga.setPaintFlags(textViewHarga.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             textViewHarga.setTextColor(getResources().getColor(R.color.error)); // Assuming you have red color defined
             textViewHarga.setTextSize(14f); // Smaller size for original price
-            textViewHarga.setText(formatRupiah(String.valueOf(product.getHargaJual())));
+            textViewHarga.setText(formatRupiah(String.valueOf(product.getHargapokok())));
 
             // Show discounted price
             textViewHargaDiskon.setVisibility(View.VISIBLE);
-            textViewHargaDiskon.setText(formatRupiah(String.valueOf(product.getHargapokok())));
+            textViewHargaDiskon.setText(formatRupiah(String.valueOf(product.getHargaJual())));
             textViewHargaDiskon.setTextColor(getResources().getColor(R.color.primary));
             textViewHargaDiskon.setTextSize(18f); // Larger size for discounted price
             textViewHargaDiskon.setTypeface(null, android.graphics.Typeface.BOLD);

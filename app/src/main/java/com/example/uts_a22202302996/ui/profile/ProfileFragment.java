@@ -81,6 +81,13 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
+        // Mengatur listener untuk tombol tiktok
+        binding.tiktok.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://www.tiktok.com/@klacomputer.id"));
+            startActivity(intent);
+        });
+
         // Mengatur listener untuk tombol website
         binding.website.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);

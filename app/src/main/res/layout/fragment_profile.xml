@@ -244,11 +244,19 @@
                             android:layout_marginStart="24dp"/>
 
                         <ImageButton
+                            android:id="@+id/tiktok"
+                            style="@style/SocialButtonStyle"
+                            android:src="@drawable/tiktok"
+                            android:contentDescription="facebook"
+                            android:layout_marginStart="24dp"/>
+
+                        <ImageButton
                             android:id="@+id/website"
                             style="@style/SocialButtonStyle"
                             android:src="@drawable/website"
                             android:contentDescription="website"
                             android:layout_marginStart="24dp"/>
+
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

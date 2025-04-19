@@ -69,16 +69,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if (product.getDiskonJual() > 0) {
             // Tampilkan harga asli dengan coretan dan harga diskon
             holder.textViewHargaJual.setPaintFlags(holder.textViewHargaJual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.textViewHargaJual.setTextSize(16);
-            holder.textViewHargaJual.setTypeface(null, Typeface.NORMAL);
+            holder.textViewHargaJual.setTextSize(14);
+            holder.textViewHargaJual.setTypeface(null, Typeface.ITALIC);
+            holder.textViewHargaJual.setTextColor(ContextCompat.getColor(fragment.getContext(), R.color.error));
             holder.textViewHargaJual.setText(hargaPokok);
             holder.textViewHargaJualDiskon.setVisibility(View.VISIBLE);
             holder.textViewHargaJualDiskon.setText(hargaJual);
+            holder.textViewDiscountBadge.setVisibility(View.VISIBLE);
         } else {
             // Tanpa diskon
             holder.textViewHargaJual.setPaintFlags(holder.textViewHargaJual.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.textViewHargaJual.setText(hargaJual);
+            holder.textViewHargaJual.setTextSize(16);
+            holder.textViewHargaJual.setTypeface(null, Typeface.BOLD);
+            holder.textViewHargaJual.setTextColor(ContextCompat.getColor(fragment.getContext(), R.color.primary));
+            holder.textViewHargaJual.setText(hargaPokok);
             holder.textViewHargaJualDiskon.setVisibility(View.GONE);
+            holder.textViewDiscountBadge.setVisibility(View.GONE);
         }
 
         // Cek stok (Sold Out)
@@ -112,7 +118,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     // ViewHolder untuk menyimpan referensi elemen UI
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewProduct, imageViewStatus;
-        TextView textViewMerk, textViewHargaJual, textViewHargaJualDiskon;
+        TextView textViewMerk, textViewHargaJual, textViewHargaJualDiskon, textViewDiscountBadge;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,6 +127,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textViewMerk = itemView.findViewById(R.id.textViewMerk);
             textViewHargaJual = itemView.findViewById(R.id.textViewHargaJual);
             textViewHargaJualDiskon = itemView.findViewById(R.id.textViewHargaJualDiskon);
+            textViewDiscountBadge = itemView.findViewById(R.id.textViewDiscountBadge);
         }
     }
 
