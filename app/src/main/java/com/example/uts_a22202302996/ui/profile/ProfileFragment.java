@@ -54,8 +54,7 @@ public class ProfileFragment extends Fragment {
                 .circleCrop()
                 .error(R.drawable.ic_launcher_foreground)
                 .placeholder(R.drawable.ic_launcher_foreground)
-                .into(binding.imgProfile)
-        ;
+                .into(binding.imgProfile);
 
         // Mengatur listener untuk tombol edit profile
         binding.editProfile.setOnClickListener(v -> {

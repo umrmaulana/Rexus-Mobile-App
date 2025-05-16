@@ -1,5 +1,6 @@
 package com.example.uts_a22202302996.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
@@ -16,15 +17,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.R;
+import com.example.uts_a22202302996.api.RegisterAPI;
+import com.example.uts_a22202302996.api.ServerAPI;
+import com.example.uts_a22202302996.model.SharedProductViewModel;
 import com.example.uts_a22202302996.product.Product;
 import com.example.uts_a22202302996.product.ProductDetailDialog;
+import com.example.uts_a22202302996.ui.product.ProductFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -34,10 +42,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> productList;
     private Fragment fragment;
+    private int currentViewCount = 0;
 
     // Constructor
     public ProductAdapter(Fragment fragment, List<Product> productList) {
@@ -71,6 +85,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         // Set data ke tampilan
         holder.textViewMerk.setText(product.getMerk());
+
+        // Get SharedPreferences (declare once)
+        SharedPreferences sharedPreferences = fragment.requireContext().getSharedPreferences("product_views", Context.MODE_PRIVATE);
+
+        // Retrieve the current view count for this product
+        String productKey = "view_count_" + product.getKode();
+        int savedViewCount = sharedPreferences.getInt(productKey, 0);
+
+        // Update the TextView with the saved view count
+        holder.txView.setText("view : " + savedViewCount);
 
         // Format harga
         String hargaJual = formatRupiah(String.valueOf(product.getHargaJual()));
@@ -126,19 +150,59 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         // Klik item untuk membuka detail produk
         holder.itemView.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("product", product); // Pass the product object
-            NavController navController = Navigation.findNavController(fragment.requireActivity(), R.id.nav_host_fragment_activity_main);
-            navController.navigate(R.id.productDetailFragment, bundle);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            // Increment the view count
+            int currentViewCount = sharedPreferences.getInt(productKey, 0);
+            currentViewCount++;
+            editor.putInt(productKey, currentViewCount);
+            editor.apply(); // Save the updated view count
+
+            // Update the TextView
+            holder.txView.setText("view : " + currentViewCount);
+
+            // Update the view count in the database using the API
+            RegisterAPI apiService = ServerAPI.getClient().create(RegisterAPI.class);
+            Call<ResponseBody> call = apiService.postView(product.getKode(), currentViewCount);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        if (fragment.getContext() != null) {
+                            Toast.makeText(fragment.getContext(), "View count updated in database", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (fragment.getContext() != null) {
+                            Toast.makeText(fragment.getContext(), "Failed to update view count in database", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(fragment.getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            // Kirim data produk ke SharedProductViewModel
+            SharedProductViewModel sharedViewModel = new ViewModelProvider(fragment.requireActivity()).get(SharedProductViewModel.class);
+            sharedViewModel.selectProduct(product);
+
+            // Navigasi ke ProductFragment
+            Activity activity = fragment.getActivity();
+            if (activity instanceof MainActivity) {
+                BottomNavigationView bottomNavigationView = activity.findViewById(R.id.nav_view);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_product);
+            }
         });
 
         // Handle "Add to Cart" button click
         holder.addToCart.setOnClickListener(v -> {
-            SharedPreferences sharedPreferences = fragment.requireContext().getSharedPreferences("product", Context.MODE_PRIVATE);
+            SharedPreferences cartPreferences = fragment.requireContext().getSharedPreferences("product", Context.MODE_PRIVATE);
             Gson gson = new Gson();
 
             // Retrieve existing cart data
-            String jsonText = sharedPreferences.getString("listproduct", null);
+            String jsonText = cartPreferences.getString("listproduct", null);
             Type type = new TypeToken<ArrayList<Product>>() {}.getType();
             ArrayList<Product> cartList = gson.fromJson(jsonText, type);
 
@@ -168,7 +232,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             // Save the updated cart back to SharedPreferences
             String updatedJson = gson.toJson(cartList);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            SharedPreferences.Editor editor = cartPreferences.edit();
             editor.putString("listproduct", updatedJson);
             editor.apply();
 
@@ -191,6 +255,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewProduct, imageViewStatus;
         TextView textViewMerk, textViewHargaJual, textViewHargaJualDiskon, textViewDiscountBadge;
+        TextView txView;
         ImageButton addToCart;
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -202,6 +267,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textViewHargaJualDiskon = itemView.findViewById(R.id.textViewHargaJualDiskon);
             textViewDiscountBadge = itemView.findViewById(R.id.textViewDiscountBadge);
             addToCart = itemView.findViewById(R.id.addToCart);
+            txView = itemView.findViewById(R.id.txView);
         }
     }
 

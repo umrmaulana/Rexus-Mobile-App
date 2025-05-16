@@ -62,7 +62,7 @@ public class SearchActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(layoutManager);
         productList = new ArrayList<>();
-        adapter = new SearchAdapter(productList);
+        adapter = new SearchAdapter(this, productList);
         recyclerView.setAdapter(adapter);
 
         searchView.setIconified(false);
@@ -118,7 +118,7 @@ public class SearchActivity extends AppCompatActivity {
                     if (navigateToHome) {
                         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
                         intent.putExtra("selected_products", new ArrayList<>(results));
-                        intent.putExtra("navigate_to", "home");
+                        intent.putExtra("navigate_to", "product");
                         startActivity(intent);
                     } else {
                         adapter.updateData(results);
@@ -139,6 +139,5 @@ public class SearchActivity extends AppCompatActivity {
                 Toast.makeText(SearchActivity.this, "Gagal: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

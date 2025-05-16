@@ -22,9 +22,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dp"
-        tools:ignore="SpeakableTextPresentCheck"
+        tools:ignore="MissingConstraints,SpeakableTextPresentCheck"
         tools:listitem="@layout/list_product" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

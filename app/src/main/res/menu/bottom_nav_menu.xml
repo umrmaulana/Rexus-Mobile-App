@@ -9,6 +9,11 @@
         android:title="@string/title_Home" />
 
     <item
+        android:id="@+id/navigation_product"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/title_Product" />
+
+    <item
         android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_cart"
         android:title="@string/title_Cart" />

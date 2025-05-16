@@ -5,32 +5,47 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+    <!-- Home -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.uts_a22202302996.ui.home.HomeFragment"
         android:label="@string/title_Home"
         tools:layout="@layout/fragment_home" />
 
+    <!-- Product List -->
+    <fragment
+        android:id="@+id/navigation_product"
+        android:name="com.example.uts_a22202302996.ui.product.ProductFragment"
+        android:label="Product"
+        tools:layout="@layout/fragment_product">
+        <action
+            android:id="@+id/action_productFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- Product Detail -->
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.example.uts_a22202302996.product.ProductDetailFragment"
+        android:label="Product Detail"
+        tools:layout="@layout/fragment_product_detail" />
+
+    <!-- Cart -->
     <fragment
         android:id="@+id/navigation_cart"
         android:name="com.example.uts_a22202302996.ui.cart.CartFragment"
         android:label="@string/title_Cart"
         tools:layout="@layout/fragment_cart" />
 
+    <!-- Profile -->
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.uts_a22202302996.ui.profile.ProfileFragment"
         android:label="@string/title_Profile"
         tools:layout="@layout/fragment_profile" />
-
-    <fragment
-        android:id="@+id/productDetailFragment"
-        android:name="com.example.uts_a22202302996.product.ProductDetailFragment"
-        android:label="Product Detail"
-        tools:layout="@layout/fragment_product_detail">
-        <argument
-            android:name="ARG_PRODUCT"
-            app:argType="com.example.uts_a22202302996.product.Product" />
-    </fragment>
 
 </navigation>

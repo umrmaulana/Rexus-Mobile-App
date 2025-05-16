@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Inisialisasi komponen UI
         tv_register = findViewById(R.id.tv_register);
-        etUsername = findViewById(R.id.etUsername);
+        etUsername = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
 

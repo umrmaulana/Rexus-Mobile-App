@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
-        android:background="@drawable/rounded_background"
+        android:background="@drawable/rounded_background_up"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:focusedByDefault="true"
@@ -54,11 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="username"
+            android:hint="email"
             app:hintTextColor="@color/black"
             app:boxStrokeColor="@color/primary_dark"
             app:boxStrokeWidth="2dp"
-            app:startIconDrawable="@drawable/ic_user"
+            app:startIconDrawable="@drawable/ic_email"
             app:endIconMode="clear_text"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
@@ -68,7 +68,7 @@
             app:counterMaxLength="50">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUsername"
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"

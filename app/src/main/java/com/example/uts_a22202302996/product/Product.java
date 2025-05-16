@@ -48,6 +48,9 @@ public class Product implements Serializable {
     @SerializedName("hargapokok")
     private Double hargaPokok;
 
+    @SerializedName("view")
+    private Integer view;
+
     public String getKode() { return kode; }
     public String getMerk() { return merk; }
     public String getKategori() { return kategori; }
@@ -59,4 +62,5 @@ public class Product implements Serializable {
     public int getDiskonJual() { return diskonJual != null ? diskonJual : 0; }
     public int getDiskonBeli() { return diskonBeli != null ? diskonBeli : 0; }
     public Double getHargapokok() { return hargaPokok != null ? hargaPokok : 0; }
+    public int getView() { return view != null ? view : 0; }
 }

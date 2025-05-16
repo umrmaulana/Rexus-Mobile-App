@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.adapter.ProductAdapter;
-import com.example.uts_a22202302996.ui.home.HomeViewModel;
+import com.example.uts_a22202302996.model.SharedProductViewModel;
+import com.example.uts_a22202302996.ui.product.ProductViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class AllProductsFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView textViewEmpty;
     private ProductAdapter productAdapter;
-    private HomeViewModel homeViewModel;
+    private ProductViewModel productViewModel;
     private SearchView searchView;
 
     @Nullable
@@ -41,10 +43,10 @@ public class AllProductsFragment extends Fragment {
         productAdapter = new ProductAdapter(AllProductsFragment.this, new ArrayList<>());
         recyclerView.setAdapter(productAdapter);
 
-        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        productViewModel = new ViewModelProvider(requireActivity()).get(ProductViewModel.class);
 
         // Observe LiveData dari ViewModel
-        homeViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
+        productViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
             if (products == null || products.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 textViewEmpty.setVisibility(View.VISIBLE);
@@ -55,14 +57,14 @@ public class AllProductsFragment extends Fragment {
             }
         });
 
-        homeViewModel.fetchAllProducts("");
-        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+        productViewModel.fetchAllProducts("");
+        productViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
             if (query != null) {
-                homeViewModel.fetchAllProducts(query);
+                productViewModel.fetchAllProducts(query);
             }
         });
 
-        homeViewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
+        productViewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
                 textViewEmpty.setText("Gagal memuat data produk");
                 textViewEmpty.setVisibility(View.VISIBLE);
@@ -71,12 +73,12 @@ public class AllProductsFragment extends Fragment {
         });
 
         // Fetch all products initially
-        homeViewModel.fetchAllProducts("");
+        productViewModel.fetchAllProducts("");
 
         // Observe search query
-        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+        productViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
             if (query != null) {
-                homeViewModel.fetchAllProducts(query);
+                productViewModel.fetchAllProducts(query);
             }
         });
 

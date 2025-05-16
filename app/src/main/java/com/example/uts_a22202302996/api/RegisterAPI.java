@@ -18,7 +18,7 @@ public interface RegisterAPI {
     @FormUrlEncoded
     @POST("get_login.php")
     Call<ResponseBody> login(
-            @Field("username") String username,
+            @Field("email") String email,
             @Field("password") String password
     );
 
@@ -53,10 +53,23 @@ public interface RegisterAPI {
     Call<ProductResponse> getProducts(@Query("kategori") String kategori,
                                       @Query("search") String search);
 
+    @GET("get_populer_product.php")
+    Call<ProductResponse> getPopulerProducts();
+
+    @GET("get_category_product.php")
+    Call<ProductResponse> getCategoryProducts(@Query("kategori") String kategori);
+
     @Multipart
     @POST("upload_image.php")
     Call<ResponseBody> uploadImage(
             @Part MultipartBody.Part image,
             @Part("username") RequestBody username
+    );
+
+    @FormUrlEncoded
+    @POST("post_view.php")
+    Call<ResponseBody> postView(
+            @Field("kode") String kode,
+            @Field("view") int view
     );
 }

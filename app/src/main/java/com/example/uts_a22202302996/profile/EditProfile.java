@@ -3,6 +3,7 @@ package com.example.uts_a22202302996.profile;
 import static com.example.uts_a22202302996.auth.LoginActivity.URL;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -59,6 +60,9 @@ public class EditProfile extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int CAMERA_REQUEST = 2;
     private String currentPhotoPath;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     ImageView ivBack, imgProfile;
     TextView btnChangePhoto;
@@ -178,8 +182,24 @@ public class EditProfile extends AppCompatActivity {
                         try {
                             if (response.body() != null) {
                                 JSONObject json = new JSONObject(response.body().string());
+
                                 Toast.makeText(EditProfile.this, json.getString("message"), Toast.LENGTH_SHORT).show();
                                 getProfil(data.getUsername());
+
+                                String nama = json.getJSONObject("data").getString("nama");
+                                String username = json.getJSONObject("data").getString("username");
+                                String email = json.getJSONObject("data").getString("email");
+                                String foto = json.getJSONObject("data").getString("foto");
+
+                                // Simpan data login ke SharedPreferences
+                                SharedPreferences sharedPreferences = getSharedPreferences("login_session", MODE_PRIVATE);
+                                editor = sharedPreferences.edit();
+                                editor.putString("username", username);
+                                editor.putString("nama", nama);
+                                editor.putString("email", email);
+                                editor.putString("foto", foto);
+                                editor.apply();
+
                             }
                         } catch (JSONException | IOException e) {
                             e.printStackTrace();

@@ -2,13 +2,13 @@ package com.example.uts_a22202302996.product;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,11 +17,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.R;
-import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.ui.product.ProductFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,22 +31,26 @@ import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import androidx.activity.OnBackPressedCallback;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class ProductDetailFragment extends Fragment {
 
     private static final String ARG_PRODUCT = "product";
 
     private ArrayList<Product> listcart;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences, productView;
     private Product product;
+    int currentViewCount = 0;
 
     public static ProductDetailFragment newInstance(Product product) {
         ProductDetailFragment fragment = new ProductDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PRODUCT, product);
+        args.putSerializable("product", product);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     private String formatRupiah(String harga) {
         try {
@@ -63,6 +69,7 @@ public class ProductDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
 
         sharedPreferences = requireContext().getSharedPreferences("product", MODE_PRIVATE);
+        productView = requireContext().getSharedPreferences("product_views", MODE_PRIVATE);
 
         // Retrieve the product object from arguments
         if (getArguments() != null) {
@@ -73,6 +80,14 @@ public class ProductDetailFragment extends Fragment {
             Toast.makeText(requireContext(), "Product data is missing", Toast.LENGTH_SHORT).show();
             return view;
         }
+
+        // Retrieve the current view count for this product
+        String productKey = "view_count_" + product.getKode();
+        int savedViewCount = productView.getInt(productKey, 0);
+
+        // Update the TextView with the saved view count
+        TextView txView = view.findViewById(R.id.txView);
+        txView.setText("view : " + savedViewCount);
 
         // Initialize cart list
         listcart = new ArrayList<>();
@@ -91,6 +106,7 @@ public class ProductDetailFragment extends Fragment {
         ImageView imageView = view.findViewById(R.id.imageViewDetail);
         ImageView imageViewStatus = view.findViewById(R.id.imageViewStatus);
         TextView textViewMerk = view.findViewById(R.id.textViewMerkDetail);
+        TextView textViewKategori = view.findViewById(R.id.textViewKategori);
         TextView textViewHarga = view.findViewById(R.id.textViewHargaDetail);
         TextView textViewHargaDiskon = view.findViewById(R.id.textViewHargaDiskon);
         TextView textViewDeskripsi = view.findViewById(R.id.textViewDeskripsiDetail);
@@ -98,15 +114,26 @@ public class ProductDetailFragment extends Fragment {
         TextView textViewDiscountBadge = view.findViewById(R.id.textViewDiscountBadge);
         ImageButton imageButtonCart = view.findViewById(R.id.imageButtonCart);
         ImageButton imageButtonBack = view.findViewById(R.id.imageButtonBack);
+
         imageButtonBack.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+
             if (getActivity() != null) {
-                getActivity().onBackPressed();
+                navController.popBackStack(); // kembali ke HomeFragment
             }
+            if (!navController.popBackStack()) {
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                requireActivity().finish();
+            }
+
         });
 
         // Set product data
         Glide.with(requireContext()).load(product.getFoto()).into(imageView);
         textViewMerk.setText(product.getMerk());
+        textViewKategori.setText(product.getKategori());
         textViewDeskripsi.setText(product.getDeskripsi());
         textViewStok.setText("Stok: " + product.getStok());
 
@@ -197,5 +224,17 @@ public class ProductDetailFragment extends Fragment {
         });
 
         return view;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+                navController.popBackStack(); // Kembali ke fragment sebelumnya
+            }
+        });
     }
 }

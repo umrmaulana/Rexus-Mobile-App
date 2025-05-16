@@ -66,6 +66,15 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/textViewKategori"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Kategori Produk"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,6 +142,16 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/txView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="View: 0"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -143,7 +162,6 @@
         android:layout_marginTop="12dp"
         android:background="@color/primary"
         android:padding="8dp"
-        android:layout_marginBottom="50dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_cart"
         app:tint="@color/secondary"

@@ -183,7 +183,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     } else {
                         // Jika status tidak 1, artinya user sudah ada atau error lain
-                        showMessage("User Sudah Ada");
+                        showMessage("Email Sudah Ada");
                     }
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();

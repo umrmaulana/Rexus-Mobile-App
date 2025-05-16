@@ -1,18 +1,23 @@
 package com.example.uts_a22202302996;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.uts_a22202302996.databinding.ActivityMainBinding;
+import com.example.uts_a22202302996.model.SharedProductViewModel;
 import com.example.uts_a22202302996.product.Product;
 import com.example.uts_a22202302996.product.ProductDetailFragment;
 import com.example.uts_a22202302996.ui.home.HomeFragment;
+import com.example.uts_a22202302996.ui.product.ProductFragment;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -39,41 +44,18 @@ public class MainActivity extends AppCompatActivity {
         // Inisialisasi dan perbarui badge keranjang
         updateCartBadge();
 
-        // Handle intent data
-        if (getIntent() != null && getIntent().hasExtra("selected_products")) {
-            ArrayList<Product> selectedProducts = (ArrayList<Product>) getIntent().getSerializableExtra("selected_products");
-            String navigateTo = getIntent().getStringExtra("navigate_to");
+        // Mengatur product detail dari search
+        handleSearchIntent(getIntent());
 
-            if ("home".equals(navigateTo)) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("selected_products", selectedProducts);
+        // Mengatur product dari search
+        handleProductIntent();
+    }
 
-                HomeFragment homeFragment = new HomeFragment();
-                homeFragment.setArguments(bundle);
-
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.nav_host_fragment_activity_main, homeFragment)
-                        .commit();
-            }
-        }
-
-        //  handle search intent
-        if (getIntent() != null && getIntent().hasExtra("product")) {
-            Product product = (Product) getIntent().getSerializableExtra("product");
-            if (product != null) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("product", product);
-
-                ProductDetailFragment productDetailFragment = new ProductDetailFragment();
-                productDetailFragment.setArguments(bundle);
-
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.nav_host_fragment_activity_main, productDetailFragment)
-                        .commit();
-            }
-        }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleSearchIntent(intent);
     }
 
     /**
@@ -84,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Konfigurasi destinasi utama
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_cart, R.id.navigation_profile)
+                R.id.navigation_home, R.id.navigation_cart, R.id.navigation_profile, R.id.navigation_product)
                 .build();
 
         // Setup NavController
@@ -128,6 +110,47 @@ public class MainActivity extends AppCompatActivity {
             // Sembunyikan badge jika keranjang kosong atau null
             badge.clearNumber();
             badge.setVisible(false);
+        }
+    }
+
+    /**
+     * Mengatur produk dari intent pencarian.
+     *
+     * @param intent Intent yang berisi data produk.
+     */
+    private void handleSearchIntent(Intent intent) {
+        if (intent != null && intent.hasExtra("product")) {
+            Product product = (Product) intent.getSerializableExtra("product");
+
+            if (product != null) {
+                // Simpan ke Shared ViewModel
+                SharedProductViewModel viewModel = new ViewModelProvider(this).get(SharedProductViewModel.class);
+                viewModel.selectProduct(product);
+
+                // Pindah ke tab Product
+                BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_product);
+            }
+        }
+    }
+
+    /**
+     * Mengatur banyak produk dari intent pencarian.
+     */
+    private void handleProductIntent() {
+        if (getIntent() != null && getIntent().hasExtra("selected_products")) {
+            ArrayList<Product> selectedProducts = (ArrayList<Product>) getIntent().getSerializableExtra("selected_products");
+            String navigateTo = getIntent().getStringExtra("navigate_to");
+
+            if ("product".equals(navigateTo)) {
+                // Kirim ke Shared ViewModel
+                SharedProductViewModel viewModel = new ViewModelProvider(this).get(SharedProductViewModel.class);
+                viewModel.setSelectedProductList(selectedProducts);
+
+                // Navigasi ke tab product melalui BottomNavigationView
+                BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_product);
+            }
         }
     }
 }

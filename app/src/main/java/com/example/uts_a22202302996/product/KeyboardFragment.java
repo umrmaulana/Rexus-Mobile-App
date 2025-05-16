@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.adapter.ProductAdapter;
-import com.example.uts_a22202302996.ui.home.HomeViewModel;
+import com.example.uts_a22202302996.model.SharedProductViewModel;
+import com.example.uts_a22202302996.ui.product.ProductViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ public class KeyboardFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView textViewEmpty;
     private ProductAdapter productAdapter;
-    private HomeViewModel homeViewModel;
+    private ProductViewModel productViewModel;
 
     @Nullable
     @Override
@@ -39,10 +41,10 @@ public class KeyboardFragment extends Fragment {
         recyclerView.setAdapter(productAdapter);
 
         // Inisialisasi ViewModel
-        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        productViewModel = new ViewModelProvider(requireActivity()).get(ProductViewModel.class);
 
         // Observe LiveData dari ViewModel
-        homeViewModel.getKeyboardProducts().observe(getViewLifecycleOwner(), products -> {
+        productViewModel.getKeyboardProducts().observe(getViewLifecycleOwner(), products -> {
             if (products == null || products.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 textViewEmpty.setVisibility(View.VISIBLE);
@@ -53,14 +55,14 @@ public class KeyboardFragment extends Fragment {
             }
         });
 
-        homeViewModel.fetchKeyboardProducts("");
-        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+        productViewModel.fetchKeyboardProducts("");
+        productViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
             if (query != null) {
-                homeViewModel.fetchKeyboardProducts(query);
+                productViewModel.fetchKeyboardProducts(query);
             }
         });
 
-        homeViewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
+        productViewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
                 textViewEmpty.setText("Gagal memuat data produk");
                 textViewEmpty.setVisibility(View.VISIBLE);
@@ -69,12 +71,12 @@ public class KeyboardFragment extends Fragment {
         });
 
         // Fetch all products initially
-        homeViewModel.fetchKeyboardProducts("");
+        productViewModel.fetchKeyboardProducts("");
 
         // Observe search query
-        homeViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+        productViewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
             if (query != null) {
-                homeViewModel.fetchKeyboardProducts(query);
+                productViewModel.fetchKeyboardProducts(query);
             }
         });
 
