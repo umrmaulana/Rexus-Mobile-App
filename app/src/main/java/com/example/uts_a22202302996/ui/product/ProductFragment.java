@@ -13,26 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.uts_a22202302996.R;
-import com.example.uts_a22202302996.adapter.ProductAdapter;
 import com.example.uts_a22202302996.adapter.ViewPagerAdapter;
+import com.example.uts_a22202302996.api.CategoryResponse;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.databinding.FragmentProductBinding;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
-import com.example.uts_a22202302996.product.AllProductsFragment;
 import com.example.uts_a22202302996.product.CategoryResultFragment;
-import com.example.uts_a22202302996.product.HeadsetFragment;
-import com.example.uts_a22202302996.product.KeyboardFragment;
-import com.example.uts_a22202302996.product.MouseFragment;
 import com.example.uts_a22202302996.product.Product;
 import com.example.uts_a22202302996.product.ProductDetailFragment;
-import com.example.uts_a22202302996.product.ProductResponse;
+import com.example.uts_a22202302996.product.ProductListFragment;
+import com.example.uts_a22202302996.api.ProductResponse;
 import com.example.uts_a22202302996.product.SearchResultFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -65,7 +59,7 @@ public class ProductFragment extends Fragment {
         // Set up selected category
         viewModel.getSelectedCategory().observe(getViewLifecycleOwner(), category -> {
             if (category != null) {
-                binding.toolbarTitle.setText(category);
+                binding.toolbarTitle.setText(category.toUpperCase());
                 displayCategoriesProducts(category);
                 viewModel.selectCategory(null);
             }
@@ -84,6 +78,7 @@ public class ProductFragment extends Fragment {
         // Set up Selected Product List Search
         viewModel.getSelectedProductList().observe(getViewLifecycleOwner(), products -> {
             if (products != null && !products.isEmpty()) {
+                binding.toolbarTitle.setText("Search Result");
                 displaySelectedProducts(products);
                 viewModel.setSelectedProductList(null);
             }
@@ -154,7 +149,7 @@ public class ProductFragment extends Fragment {
     private void displaySelectedProducts(List<Product> products) {
         View productContent = binding.getRoot().findViewById(R.id.productContent);
         if (productContent != null) {
-            productContent.setVisibility(View.GONE); // pastikan disembunyikan
+            productContent.setVisibility(View.GONE);
         }
 
         Fragment existingFragment = getChildFragmentManager().findFragmentById(R.id.productContainer);
@@ -176,22 +171,47 @@ public class ProductFragment extends Fragment {
 
         View productContent = binding.getRoot().findViewById(R.id.productContent);
         if (productContent != null) {
-            productContent.setVisibility(View.VISIBLE); // pastikan tampil
+            productContent.setVisibility(View.VISIBLE);
         }
 
         TabLayout tabLayout = binding.tabLayout;
         ViewPager viewPager = binding.viewPager;
-
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(new AllProductsFragment(), "All");
-        viewPagerAdapter.addFragment(new KeyboardFragment(), "Keyboard");
-        viewPagerAdapter.addFragment(new MouseFragment(), "Mouse");
-        viewPagerAdapter.addFragment(new HeadsetFragment(), "Headset");
 
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        RegisterAPI apiService = ServerAPI.getClient().create(RegisterAPI.class);
+        Call<CategoryResponse> call = apiService.getCategories();
+
+        call.enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<String> categories = response.body().getCategories();
+
+                    // Tambahkan tab "All" di awal
+                    viewPagerAdapter.addFragment(ProductListFragment.newInstance("all"), "All");
+
+                    for (String category : categories) {
+                        viewPagerAdapter.addFragment(ProductListFragment.newInstance(category), capitalize(category));
+                    }
+
+                    viewPager.setAdapter(viewPagerAdapter);
+                    tabLayout.setupWithViewPager(viewPager);
+                } else {
+                    Toast.makeText(getContext(), "Gagal memuat kategori", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Kesalahan: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    private String capitalize(String input) {
+        if (input == null || input.isEmpty()) return "";
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
 
     @Override
     public void onDestroyView() {

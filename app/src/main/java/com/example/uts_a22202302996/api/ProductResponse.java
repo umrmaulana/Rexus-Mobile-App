@@ -1,11 +1,12 @@
-package com.example.uts_a22202302996.product;
+package com.example.uts_a22202302996.api;
 
+import com.example.uts_a22202302996.product.Product;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class ProductResponse {
-    @SerializedName("result") // Sesuaikan dengan nama JSON
+    @SerializedName("result")
     private List<Product> result;
 
     public List<Product> getResult() {

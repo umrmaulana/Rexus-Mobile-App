@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog pd;
     Button btnLogin;
     EditText etUsername, etPassword;
-    TextView tv_register;
+    TextView tv_register, tv_forgot_password, tv_guest_login;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -72,10 +72,25 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        tv_forgot_password = findViewById(R.id.tv_forgot_password);
+        tv_guest_login = findViewById(R.id.tv_guest_login);
 
         // Klik "Belum punya akun?"
         tv_register.setOnClickListener(view -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            finish();
+        });
+
+        // Klik "Login sebagai tamu"
+        tv_guest_login.setOnClickListener(view -> {
+            // Simpan status login tamu
+            editor = sharedPreferences.edit();
+            editor.putBoolean("isLoggedIn", true);
+            editor.putString("username", "Guest");
+            editor.apply();
+
+            // Buka MainActivity
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         });
 

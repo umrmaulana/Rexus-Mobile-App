@@ -1,10 +1,11 @@
 package com.example.uts_a22202302996.profile;
 
+import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
 import static com.example.uts_a22202302996.auth.LoginActivity.URL;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,12 +28,13 @@ import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
+import com.example.uts_a22202302996.ui.profile.ProfileViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +42,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -56,12 +60,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditProfile extends AppCompatActivity {
 
+    private ProfileViewModel viewModel;
+
     private String username, nama, foto;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int CAMERA_REQUEST = 2;
     private String currentPhotoPath;
 
-    SharedPreferences sharedPreferences;
+    int resultAvatar = 0;
     SharedPreferences.Editor editor;
 
     ImageView ivBack, imgProfile;
@@ -80,9 +86,7 @@ public class EditProfile extends AppCompatActivity {
             return insets;
         });
 
-        nama = getIntent().getStringExtra("nama");
         username = getIntent().getStringExtra("username");
-        foto = getIntent().getStringExtra("foto");
 
         // Inisialisasi UI
         ivBack = findViewById(R.id.ivBack);
@@ -97,19 +101,49 @@ public class EditProfile extends AppCompatActivity {
         etProfile_Kodepos = findViewById(R.id.etProfile_Kodepos);
         btnSubmit = findViewById(R.id.btnSubmit);
 
-        // Set data ke EditText
-        Glide.with(this)
-                .load(URL + "images/" + foto)
-                .centerCrop()
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .error(R.drawable.ic_launcher_foreground)
-                .into(imgProfile);
-
         getProfil(username);
 
         btnChangePhoto.setOnClickListener(v -> showImagePickerDialog());
 
-        btnSubmit.setOnClickListener(v -> updateProfil());
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
+        // Di onCreate() EditProfile
+        viewModel.getProfile().observe(this, profile -> {
+            if(profile != null) {
+                // Update UI dengan data yang ada
+                etProfile_Nama.setText(profile.nama);
+                etProfile_Email.setText(profile.email);
+                etProfile_Alamat.setText(profile.alamat);
+                etProfile_Kota.setText(profile.kota);
+                etProfile_Provinsi.setText(profile.provinsi);
+                etProfile_Telp.setText(profile.telp);
+                etProfile_Kodepos.setText(profile.kodepos);
+            } else {
+                // Handle kasus data null
+                Toast.makeText(this, "Memuat data profil...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnSubmit.setOnClickListener(v -> {
+            Profile currentProfile = viewModel.getProfile().getValue();
+
+            if(currentProfile == null || currentProfile.username.isEmpty()) {
+                Toast.makeText(this, "Tunggu hingga data selesai dimuat", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Profile updatedProfile = new Profile(currentProfile.username);
+            updatedProfile.nama = etProfile_Nama.getText().toString().trim();
+            updatedProfile.email = etProfile_Email.getText().toString().trim();
+            updatedProfile.alamat = etProfile_Alamat.getText().toString().trim();
+            updatedProfile.kota = etProfile_Kota.getText().toString().trim();
+            updatedProfile.provinsi = etProfile_Provinsi.getText().toString().trim();
+            updatedProfile.telp = etProfile_Telp.getText().toString().trim();
+            updatedProfile.kodepos = etProfile_Kodepos.getText().toString().trim();
+            updatedProfile.foto = currentProfile.foto; // Pertahankan foto jika tidak diubah
+
+            updateProfil(updatedProfile);
+        });closeContextMenu();closeContextMenu();
 
         ivBack.setOnClickListener(v -> navigateToHome());
 
@@ -142,6 +176,17 @@ public class EditProfile extends AppCompatActivity {
                             etProfile_Provinsi.setText(getValidString(data, "provinsi"));
                             etProfile_Telp.setText(getValidString(data, "telp"));
                             etProfile_Kodepos.setText(getValidString(data, "kodepos"));
+                            foto = getValidString(data, "foto");
+                            if (!foto.isEmpty()) {
+                                Glide.with(EditProfile.this)
+                                        .load(BASE_URL_IMAGE + "avatar/" + foto)
+                                        .centerCrop()
+                                        .placeholder(R.drawable.ic_user)
+                                        .error(R.drawable.ic_user)
+                                        .into(imgProfile);
+                            } else {
+                                imgProfile.setImageResource(R.drawable.ic_user);
+                            }
                         }
                     }
                 } catch (IOException | JSONException e) {
@@ -156,7 +201,7 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
-    private void updateProfil() {
+    private void updateProfil(Profile profile) {
         DataUser data = new DataUser();
         data.setNama(etProfile_Nama.getText().toString().trim());
         data.setEmail(etProfile_Email.getText().toString().trim());
@@ -199,6 +244,7 @@ public class EditProfile extends AppCompatActivity {
                                 editor.putString("email", email);
                                 editor.putString("foto", foto);
                                 editor.apply();
+
 
                             }
                         } catch (JSONException | IOException e) {
@@ -263,7 +309,7 @@ public class EditProfile extends AppCompatActivity {
 
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.uts_a22202302996.fileprovider",
+                        getApplicationContext().getPackageName() + ".fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST);
@@ -280,7 +326,6 @@ public class EditProfile extends AppCompatActivity {
                 ".jpg",
                 storageDir
         );
-
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -292,13 +337,8 @@ public class EditProfile extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
                 Uri selectedImageUri = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                    imgProfile.setImageBitmap(bitmap);
-                    uploadImage(selectedImageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                imgProfile.setImageURI(selectedImageUri);
+                uploadImage(selectedImageUri);
             } else if (requestCode == CAMERA_REQUEST) {
                 File imgFile = new File(currentPhotoPath);
                 if (imgFile.exists()) {
@@ -311,23 +351,35 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void uploadImage(Uri imageUri) {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Mengunggah foto...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         try {
-            File file = new File(getRealPathFromURI(imageUri));
-            if (file == null || !file.exists()) {
-                Toast.makeText(this, "File tidak ditemukan", Toast.LENGTH_SHORT).show();
+            // Ambil input stream dari URI
+            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+            if (inputStream == null) {
+                progressDialog.dismiss();
+                Toast.makeText(this, "Gagal membaca gambar", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Log.d("Upload", "Attempting to upload: " + file.getAbsolutePath());
+            String path = getPathFromUri(imageUri);
+            if (path == null) {
+                progressDialog.dismiss();
+                Toast.makeText(this, "Tidak dapat menemukan path dari gambar", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            File imageFile = new File(path);
 
-            // Compress image before upload
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            File compressedFile = compressImage(bitmap, file.getName());
 
-            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), compressedFile);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("image", compressedFile.getName(), requestFile);
-            RequestBody usernameBody = RequestBody.create(MediaType.parse("text/plain"), username);
+            // Buat RequestBody dan MultipartBody
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+            MultipartBody.Part fotoPart = MultipartBody.Part.createFormData("foto", imageFile.getName(), requestFile);
+            RequestBody usernamePart = RequestBody.create(MediaType.parse("text/plain"), username); // Ganti 'username' sesuai variabel global kamu
 
+            // Inisialisasi Retrofit
             ServerAPI urlAPI = new ServerAPI();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(urlAPI.BASE_URL)
@@ -335,86 +387,59 @@ public class EditProfile extends AppCompatActivity {
                     .build();
 
             RegisterAPI api = retrofit.create(RegisterAPI.class);
-            Call<ResponseBody> call = api.uploadImage(body, usernameBody);
-
-            call.enqueue(new Callback<ResponseBody>() {
+            api.uploadFoto(usernamePart, fotoPart).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    progressDialog.dismiss();
+
                     try {
                         if (response.isSuccessful() && response.body() != null) {
-                            String responseString = response.body().string();
-                            Log.d("Upload", "Server response: " + responseString);
+                            String resString = response.body().string();
+                            JSONObject json = new JSONObject(resString);
+                            Toast.makeText(EditProfile.this, json.getString("message"), Toast.LENGTH_SHORT).show();
 
-                            JSONObject json = new JSONObject(responseString);
-                            String result = json.getString("result");
-
-                            runOnUiThread(() -> {
-                                try {
-                                    Toast.makeText(EditProfile.this, json.getString("message"), Toast.LENGTH_SHORT).show();
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-
-                                if ("1".equals(result)) {
-                                    String newPhotoUrl = null;
-                                    try {
-                                        newPhotoUrl = json.getString("url");
-                                    } catch (JSONException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                    Glide.with(EditProfile.this)
-                                            .load(newPhotoUrl)
-                                            .into(imgProfile);
-                                }
-                            });
+                            if (json.getInt("result") == 1) {
+                                // Refresh profil atau aksi lain
+                                getProfil(username);
+                            }
                         } else {
-                            String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
-                            Log.e("Upload", "Server error: " + response.code() + " - " + errorBody);
-                            runOnUiThread(() ->
-                                    Toast.makeText(EditProfile.this, "Upload error: " + response.code(), Toast.LENGTH_SHORT).show());
+                            // Coba baca errorBody jika response.body() null
+                            String error = response.errorBody() != null ? response.errorBody().string() : "Tidak diketahui";
+                            Log.e("UploadFoto", "Error body: " + error);
+                            Toast.makeText(EditProfile.this, "Gagal mengunggah: " + error, Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
-                        Log.e("Upload", "Response parsing error", e);
-                        runOnUiThread(() ->
-                                Toast.makeText(EditProfile.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        e.printStackTrace();
+                        Toast.makeText(EditProfile.this, "Gagal parsing response", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.e("Upload", "Upload failed", t);
-                    runOnUiThread(() ->
-                            Toast.makeText(EditProfile.this, "Upload failed: " + t.getMessage(), Toast.LENGTH_SHORT).show());
+                    progressDialog.dismiss();
+                    Toast.makeText(EditProfile.this, "Gagal terhubung: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+
         } catch (Exception e) {
-            Log.e("Upload", "Upload preparation failed", e);
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+            e.printStackTrace();
+            Toast.makeText(this, "Terjadi kesalahan saat memproses gambar", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private File compressImage(Bitmap bitmap, String filename) throws IOException {
-        File outputDir = getCacheDir();
-        File outputFile = File.createTempFile("compressed_", ".jpg", outputDir);
-
-        try (FileOutputStream out = new FileOutputStream(outputFile)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out); // 80% quality
+    @Nullable
+    private String getPathFromUri(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
         }
-
-        Log.d("Upload", "Original size: " + (bitmap.getByteCount()/1024) + "KB");
-        Log.d("Upload", "Compressed size: " + (outputFile.length()/1024) + "KB");
-
-        return outputFile;
+        return null;
     }
 
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor == null) return null;
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String path = cursor.getString(column_index);
-        cursor.close();
-        return path;
-    }
 }

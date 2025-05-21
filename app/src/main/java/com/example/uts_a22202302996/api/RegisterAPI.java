@@ -1,7 +1,5 @@
 package com.example.uts_a22202302996.api;
 
-import com.example.uts_a22202302996.product.ProductResponse;
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -59,11 +57,14 @@ public interface RegisterAPI {
     @GET("get_category_product.php")
     Call<ProductResponse> getCategoryProducts(@Query("kategori") String kategori);
 
+    @GET("get_categories.php")
+    Call<CategoryResponse> getCategories();
+
     @Multipart
-    @POST("upload_image.php")
-    Call<ResponseBody> uploadImage(
-            @Part MultipartBody.Part image,
-            @Part("username") RequestBody username
+    @POST("upload_profile.php")
+    Call<ResponseBody> uploadFoto(
+            @Part("username") RequestBody username,
+            @Part MultipartBody.Part foto
     );
 
     @FormUrlEncoded

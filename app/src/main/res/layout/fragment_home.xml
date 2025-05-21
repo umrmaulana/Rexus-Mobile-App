@@ -73,7 +73,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
-                                android:text="Selamat Datang,"
+                                android:text="Welcome,"
                                 android:textColor="@color/white"
                                 android:textSize="16dp" />
 
@@ -83,7 +83,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:layout_marginTop="8dp"
-                                android:text="Umar Maulana"
+                                android:text="Guest"
                                 android:textColor="@color/white"
                                 android:textSize="20dp"
                                 android:textStyle="bold"/>
@@ -96,7 +96,8 @@
                             android:layout_gravity="end"
                             android:layout_marginEnd="16dp"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_user"
+                            android:src="@drawable/ic_user_white"
+                            android:scaleType="fitCenter"
                             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                         <ImageButton

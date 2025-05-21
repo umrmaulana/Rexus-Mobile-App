@@ -1,19 +1,40 @@
 package com.example.uts_a22202302996.ui.profile;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.Application;
+import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class ProfileViewModel extends ViewModel {
+import com.example.uts_a22202302996.profile.Profile;
+import com.example.uts_a22202302996.profile.ProfileRepository;
 
-    private final MutableLiveData<String> mText;
+public class ProfileViewModel extends AndroidViewModel { // Ganti ke AndroidViewModel
+    private final ProfileRepository repository;
+    private final LiveData<Profile> profile;
+    private final MutableLiveData<Profile> _currentProfile = new MutableLiveData<>();
 
-    public ProfileViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is Profile fragment");
+    public ProfileViewModel(@NonNull Application application) {
+        super(application);
+        repository = new ProfileRepository(application);
+        SharedPreferences prefs = application.getSharedPreferences("login_session", MODE_PRIVATE);
+        String username = prefs.getString("username", "");
+
+        profile = repository.getProfile(username);
+
+        // Tambahkan observer untuk profile
+        profile.observeForever(profile -> {
+            if(profile != null) {
+                _currentProfile.setValue(profile);
+            }
+        });
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<Profile> getProfile() {
+        return _currentProfile;
     }
 }

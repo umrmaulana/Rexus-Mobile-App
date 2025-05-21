@@ -57,6 +57,10 @@ public class SearchResultFragment extends Fragment {
         productAdapter = new ProductAdapter(SearchResultFragment.this, new ArrayList<>());
         recyclerView.setAdapter(productAdapter);
 
+        if (productList != null) {
+            productAdapter.setProductList(productList);
+        }
+
         return view;
     }
 }

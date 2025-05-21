@@ -1,5 +1,7 @@
 package com.example.uts_a22202302996.adapter;
 
+import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -36,8 +38,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private List<Product> filteredList;
 
     private Context context;
-    private Fragment fragment;
-    private int currentViewCount = 0;
 
     public void updateData(List<Product> newList) {
         originalList.clear();
@@ -64,28 +64,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = filteredList.get(position);
 
-        // Get SharedPreferences (declare once)
-        SharedPreferences sharedPreferences = context.getSharedPreferences("product_views", Context.MODE_PRIVATE);
-
-        // Retrieve the current view count for this product
-        String productKey = "view_count_" + product.getKode();
-        int savedViewCount = sharedPreferences.getInt(productKey, 0);
-
         holder.textViewMerk.setText(product.getMerk());
         Glide.with(holder.itemView.getContext())
-                .load(product.getFoto())
+                .load(BASE_URL_IMAGE+"product/"+product.getFoto())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageViewProduct);
 
         holder.itemView.setOnClickListener(v -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
             // Increment the view count
-            int currentViewCount = sharedPreferences.getInt(productKey, 0);
+            int currentViewCount = product.getView();
             currentViewCount++;
-            editor.putInt(productKey, currentViewCount);
-            editor.apply();
 
             // Update the view count in the database using the API
             RegisterAPI apiService = ServerAPI.getClient().create(RegisterAPI.class);

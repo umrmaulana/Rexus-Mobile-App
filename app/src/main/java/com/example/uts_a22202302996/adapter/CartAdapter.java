@@ -1,5 +1,7 @@
 package com.example.uts_a22202302996.adapter;
 
+import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
+
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -60,7 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         // Load product image
         Glide.with(holder.itemView.getContext())
-                .load(product.getFoto())
+                .load(BASE_URL_IMAGE+ "product/" +product.getFoto())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageViewProduct);

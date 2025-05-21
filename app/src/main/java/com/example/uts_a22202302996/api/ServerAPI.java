@@ -5,7 +5,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServerAPI {
 //    public String BASE_URL = "http://10.0.2.2/webservice/";
-public static final String BASE_URL="https://qgis.umrmaulana.my.id/webservice/UTS/";
+public static final String BASE_URL="https://android.umrmaulana.my.id/api/";
+public static final String BASE_URL_IMAGE=BASE_URL+"images/";
     private static Retrofit retrofit;
 
     public static Retrofit getClient() {

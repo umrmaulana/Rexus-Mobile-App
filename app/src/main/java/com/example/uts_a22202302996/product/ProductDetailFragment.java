@@ -2,6 +2,8 @@ package com.example.uts_a22202302996.product;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
@@ -39,9 +41,8 @@ public class ProductDetailFragment extends Fragment {
     private static final String ARG_PRODUCT = "product";
 
     private ArrayList<Product> listcart;
-    private SharedPreferences sharedPreferences, productView;
+    private SharedPreferences sharedPreferences;
     private Product product;
-    int currentViewCount = 0;
 
     public static ProductDetailFragment newInstance(Product product) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -69,7 +70,6 @@ public class ProductDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
 
         sharedPreferences = requireContext().getSharedPreferences("product", MODE_PRIVATE);
-        productView = requireContext().getSharedPreferences("product_views", MODE_PRIVATE);
 
         // Retrieve the product object from arguments
         if (getArguments() != null) {
@@ -81,9 +81,7 @@ public class ProductDetailFragment extends Fragment {
             return view;
         }
 
-        // Retrieve the current view count for this product
-        String productKey = "view_count_" + product.getKode();
-        int savedViewCount = productView.getInt(productKey, 0);
+        int savedViewCount = product.getView()+1;
 
         // Update the TextView with the saved view count
         TextView txView = view.findViewById(R.id.txView);
@@ -131,7 +129,11 @@ public class ProductDetailFragment extends Fragment {
         });
 
         // Set product data
-        Glide.with(requireContext()).load(product.getFoto()).into(imageView);
+        Glide.with(requireContext())
+                .load(BASE_URL_IMAGE+"product/"+product.getFoto())
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(imageView);
         textViewMerk.setText(product.getMerk());
         textViewKategori.setText(product.getKategori());
         textViewDeskripsi.setText(product.getDeskripsi());

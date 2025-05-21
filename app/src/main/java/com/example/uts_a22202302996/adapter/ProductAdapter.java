@@ -1,11 +1,12 @@
 package com.example.uts_a22202302996.adapter;
 
+import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -30,8 +28,6 @@ import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
 import com.example.uts_a22202302996.product.Product;
-import com.example.uts_a22202302996.product.ProductDetailDialog;
-import com.example.uts_a22202302996.ui.product.ProductFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -87,14 +83,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.textViewMerk.setText(product.getMerk());
 
         // Get SharedPreferences (declare once)
-        SharedPreferences sharedPreferences = fragment.requireContext().getSharedPreferences("product_views", Context.MODE_PRIVATE);
+//        SharedPreferences sharedPreferences = fragment.requireContext().getSharedPreferences("product_views", Context.MODE_PRIVATE);
 
         // Retrieve the current view count for this product
-        String productKey = "view_count_" + product.getKode();
-        int savedViewCount = sharedPreferences.getInt(productKey, 0);
+//        String productKey = "view_count_" + product.getKode();
+//        int savedViewCount = sharedPreferences.getInt(productKey, 0);
 
         // Update the TextView with the saved view count
-        holder.txView.setText("view : " + savedViewCount);
+//        holder.txView.setText("view : " + savedViewCount);
 
         // Format harga
         String hargaJual = formatRupiah(String.valueOf(product.getHargaJual()));
@@ -135,9 +131,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.imageViewProduct.setAlpha(1.0f);
         }
 
+        // Load view count
+        holder.txView.setText("view : " + product.getView());
+
         // Load gambar menggunakan Glide
         Glide.with(fragment.getContext())
-                .load(product.getFoto())
+                .load(BASE_URL_IMAGE+"product/"+product.getFoto())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageViewProduct);
@@ -150,13 +149,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         // Klik item untuk membuka detail produk
         holder.itemView.setOnClickListener(v -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            // Increment the view count
-            int currentViewCount = sharedPreferences.getInt(productKey, 0);
+            int currentViewCount = product.getView();
             currentViewCount++;
-            editor.putInt(productKey, currentViewCount);
-            editor.apply(); // Save the updated view count
 
             // Update the TextView
             holder.txView.setText("view : " + currentViewCount);
