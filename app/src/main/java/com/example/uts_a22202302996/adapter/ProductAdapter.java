@@ -47,7 +47,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> productList;
     private Fragment fragment;
-    private int currentViewCount = 0;
 
     // Constructor
     public ProductAdapter(Fragment fragment, List<Product> productList) {
@@ -107,6 +106,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.textViewHargaJualDiskon.setVisibility(View.VISIBLE);
             holder.textViewHargaJualDiskon.setText(hargaJual);
             holder.textViewDiscountBadge.setVisibility(View.VISIBLE);
+            holder.textViewDiscountBadge.setText(product.getDiskonJual() + "%");
         } else {
             // Tanpa diskon
             holder.textViewHargaJual.setPaintFlags(holder.textViewHargaJual.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
@@ -132,7 +132,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         // Load view count
-        holder.txView.setText("view : " + product.getView());
+        holder.txView.setText(product.getView()+"x");
 
         // Load gambar menggunakan Glide
         Glide.with(fragment.getContext())
@@ -153,7 +153,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             currentViewCount++;
 
             // Update the TextView
-            holder.txView.setText("view : " + currentViewCount);
+            holder.txView.setText(currentViewCount+"x");
 
             // Update the view count in the database using the API
             RegisterAPI apiService = ServerAPI.getClient().create(RegisterAPI.class);

@@ -97,7 +97,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 style="@style/MenuCardStyle"
-                android:id="@+id/alamatPengiriman">
+                android:id="@+id/shippingAddress">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -132,7 +132,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 style="@style/MenuCardStyle"
-                android:id="@+id/riwayatPemesanan">
+                android:id="@+id/orderHistory">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -153,6 +153,41 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Order History"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:layout_marginStart="16dp"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow"
+                        app:tint="@color/text_secondary"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/MenuCardStyle"
+                android:id="@+id/changePassword">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_lock"
+                        app:tint="?attr/colorPrimary"
+                        android:contentDescription="change_password"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Change Password"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp"/>

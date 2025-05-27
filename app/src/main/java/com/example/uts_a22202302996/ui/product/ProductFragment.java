@@ -42,6 +42,7 @@ public class ProductFragment extends Fragment {
     private FragmentProductBinding binding;
     private ViewPagerAdapter viewPagerAdapter;
     private boolean hasOpenedProductDetail = false;
+    private boolean isLoading = false;
 
     @Nullable
     @Override
@@ -52,6 +53,9 @@ public class ProductFragment extends Fragment {
 
         // Set up ViewPager and TabLayout
         setupViewPager();
+
+        // Set up SwipeRefreshLayout
+        setupSwipeRefresh();
 
         // Set up SharedProductViewModel
         SharedProductViewModel viewModel = new ViewModelProvider(requireActivity()).get(SharedProductViewModel.class);
@@ -64,7 +68,6 @@ public class ProductFragment extends Fragment {
                 viewModel.selectCategory(null);
             }
         });
-
 
         // Set up Selected Product Item
         viewModel.getSelectedProduct().observe(getViewLifecycleOwner(), product -> {
@@ -87,6 +90,13 @@ public class ProductFragment extends Fragment {
         return root;
     }
 
+    // setup swipe refresh layout
+    private void setupSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            setupViewPager();
+        });
+    }
+
     //  Fetch products by category
     private void displayCategoriesProducts(String category) {
         View productContent = binding.getRoot().findViewById(R.id.productContent);
@@ -99,7 +109,7 @@ public class ProductFragment extends Fragment {
             getChildFragmentManager().beginTransaction().remove(existingFragment).commit();
         }
 
-        fetchProductsByCategory(category); // panggil API dulu
+        fetchProductsByCategory(category);
     }
 
     //  Fetch products by category from API
@@ -129,8 +139,6 @@ public class ProductFragment extends Fragment {
             }
         });
     }
-
-
 
     //  Open ProductDetailFragment
     public void openProductDetailFragment(Product product) {
@@ -162,8 +170,15 @@ public class ProductFragment extends Fragment {
                 .commit();
     }
 
-
+    //  Setup ViewPager and TabLayout
     private void setupViewPager() {
+        if (isLoading) return;
+        isLoading = true;
+
+        if (!binding.swipeRefresh.isRefreshing()) {
+            binding.loadingView.loadingContainer.setVisibility(View.VISIBLE);
+        }
+
         Fragment existingFragment = getChildFragmentManager().findFragmentById(R.id.productContainer);
         if (existingFragment != null && !(existingFragment instanceof ProductDetailFragment)) {
             getChildFragmentManager().beginTransaction().remove(existingFragment).commit();
@@ -184,30 +199,43 @@ public class ProductFragment extends Fragment {
         call.enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<String> categories = response.body().getCategories();
+                if (isAdded() && binding != null) { // Check if fragment is still attached
+                    binding.loadingView.loadingContainer.setVisibility(View.GONE);
+                    binding.swipeRefresh.setRefreshing(false);
+                    isLoading = false;
 
-                    // Tambahkan tab "All" di awal
-                    viewPagerAdapter.addFragment(ProductListFragment.newInstance("all"), "All");
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<String> categories = response.body().getCategories();
 
-                    for (String category : categories) {
-                        viewPagerAdapter.addFragment(ProductListFragment.newInstance(category), capitalize(category));
+                        // Add "All" tab at the beginning
+                        viewPagerAdapter.addFragment(ProductListFragment.newInstance("all"), "All");
+
+                        for (String category : categories) {
+                            viewPagerAdapter.addFragment(ProductListFragment.newInstance(category), capitalize(category));
+                        }
+
+                        viewPager.setAdapter(viewPagerAdapter);
+                        tabLayout.setupWithViewPager(viewPager);
+
+                    } else {
+                        Toast.makeText(getContext(), "Gagal memuat kategori", Toast.LENGTH_SHORT).show();
                     }
-
-                    viewPager.setAdapter(viewPagerAdapter);
-                    tabLayout.setupWithViewPager(viewPager);
-                } else {
-                    Toast.makeText(getContext(), "Gagal memuat kategori", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Kesalahan: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (isAdded() && binding != null) { // Check if fragment is still attached
+                    Toast.makeText(getContext(), "Kesalahan: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    binding.loadingView.loadingContainer.setVisibility(View.GONE);
+                    binding.swipeRefresh.setRefreshing(false);
+                    isLoading = false;
+                }
             }
         });
     }
 
+    //  Capitalize the first letter of the string
     private String capitalize(String input) {
         if (input == null || input.isEmpty()) return "";
         return input.substring(0, 1).toUpperCase() + input.substring(1);

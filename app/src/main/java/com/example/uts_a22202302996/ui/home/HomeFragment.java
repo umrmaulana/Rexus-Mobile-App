@@ -1,9 +1,7 @@
 package com.example.uts_a22202302996.ui.home;
 
 import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
-import static com.example.uts_a22202302996.auth.LoginActivity.URL;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,12 +28,13 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.SearchActivity;
+import com.example.uts_a22202302996.adapter.DiscountAdapter;
 import com.example.uts_a22202302996.adapter.ProductAdapter;
+import com.example.uts_a22202302996.adapter.DiscountSkeletonAdapter;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.databinding.FragmentHomeBinding;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
-import com.example.uts_a22202302996.ui.product.ProductFragment;
 import com.example.uts_a22202302996.ui.profile.ProfileViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -55,8 +54,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, discountRecyclerView;
     private ProductAdapter productAdapter;
+    private DiscountAdapter discountProductAdapter;
     private HomeViewModel homeViewModel;
     private ProfileViewModel viewModel;
 
@@ -127,6 +127,31 @@ public class HomeFragment extends Fragment {
             bottomNav.setSelectedItemId(R.id.navigation_product);
         });
 
+        // Set up Discount Products
+        discountRecyclerView = binding.discountProductRecyclerView;
+        discountRecyclerView.setLayoutManager(
+                new GridLayoutManager(getContext(), 1, GridLayoutManager.HORIZONTAL, false)
+        );
+        discountRecyclerView.setHasFixedSize(true);
+        discountRecyclerView.setNestedScrollingEnabled(false);
+
+        discountProductAdapter = new DiscountAdapter(this, new ArrayList<>());
+        discountRecyclerView.setAdapter(new DiscountSkeletonAdapter(5));
+        new android.os.Handler().postDelayed(() -> {
+            discountRecyclerView.setAdapter(discountProductAdapter);
+            // Optionally update data if already loaded
+            discountProductAdapter.setProductList(homeViewModel.getDiscountProducts().getValue());
+        }, 1500);
+
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+
+        // Observe LiveData Discount Products
+        homeViewModel.getDiscountProducts().observe(getViewLifecycleOwner(), products -> {
+            discountProductAdapter.setProductList(products);
+        });
+
+        homeViewModel.fetchDiscountProducts();
+
         // Set up Populer Products
         recyclerView = binding.popularProductsRecyclerView;
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -136,9 +161,7 @@ public class HomeFragment extends Fragment {
         productAdapter = new ProductAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(productAdapter);
 
-        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-
-        // Observe LiveData
+        // Observe LiveData Populer Products
         homeViewModel.getPopulerProducts().observe(getViewLifecycleOwner(), products -> {
             productAdapter.setProductList(products);
         });
@@ -244,5 +267,6 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
 

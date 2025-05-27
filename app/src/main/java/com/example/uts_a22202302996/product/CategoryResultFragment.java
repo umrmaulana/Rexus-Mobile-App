@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.adapter.ProductAdapter;
+import com.example.uts_a22202302996.adapter.ProductSkeletonAdapter;
 
 import java.util.ArrayList;
 
@@ -54,11 +55,18 @@ public class CategoryResultFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         productAdapter = new ProductAdapter(CategoryResultFragment.this, new ArrayList<>());
-        recyclerView.setAdapter(productAdapter);
+        recyclerView.setAdapter(new ProductSkeletonAdapter(10));
+        new android.os.Handler().postDelayed(() -> {
+            recyclerView.setAdapter(productAdapter);
+            if (productList != null) {
+                productAdapter.setProductList(productList);
+            }
+        }, 1500);
+//        recyclerView.setAdapter(productAdapter);
 
-        if (productList != null) {
-            productAdapter.setProductList(productList);
-        }
+//        if (productList != null) {
+//            productAdapter.setProductList(productList);
+//        }
 
         return view;
     }

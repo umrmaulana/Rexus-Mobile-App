@@ -85,7 +85,7 @@ public class ProductDetailFragment extends Fragment {
 
         // Update the TextView with the saved view count
         TextView txView = view.findViewById(R.id.txView);
-        txView.setText("view : " + savedViewCount);
+        txView.setText(savedViewCount+"x");
 
         // Initialize cart list
         listcart = new ArrayList<>();

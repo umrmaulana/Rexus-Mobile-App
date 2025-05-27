@@ -46,7 +46,7 @@
                 android:background="@drawable/discount_badge_background"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:text="5%"
+                android:text="10%"
                 android:visibility="visible"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -82,7 +82,8 @@
             app:layout_constraintBottom_toTopOf="@+id/txView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewMerk">
+            app:layout_constraintTop_toBottomOf="@+id/textViewMerk"
+            tools:ignore="NotSibling">
 
             <TextView
                 android:id="@+id/textViewHargaJual"
@@ -107,18 +108,36 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="view : "
-            android:textAlignment="center"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/addToCart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutPrice"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_view"
+                android:contentDescription="view"
+                app:tint="@color/text_secondary"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="10x"
+                android:textAlignment="textEnd"
+                tools:ignore="MissingConstraints" />
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/addToCart"

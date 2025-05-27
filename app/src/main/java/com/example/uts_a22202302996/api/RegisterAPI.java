@@ -60,11 +60,21 @@ public interface RegisterAPI {
     @GET("get_categories.php")
     Call<CategoryResponse> getCategories();
 
+    @GET("get_discount_product.php")
+    Call<ProductResponse> getDiscountProducts();
+
     @Multipart
     @POST("upload_profile.php")
     Call<ResponseBody> uploadFoto(
             @Part("username") RequestBody username,
             @Part MultipartBody.Part foto
+    );
+
+    @POST("post_change_password.php")
+    Call<ResponseBody> changePassword(
+            @Query("username") String username,
+            @Query("old_password") String oldPassword,
+            @Query("new_password") String newPassword
     );
 
     @FormUrlEncoded

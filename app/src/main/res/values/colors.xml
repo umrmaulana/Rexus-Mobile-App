@@ -54,6 +54,8 @@
     <color name="switch_thumb">#FFFFFF</color> <!-- Warna tombol switch -->
     <color name="switch_track">#BDBDBD</color> <!-- Warna trek switch -->
     <color name="surface_variant">#E0E0E0</color> <!-- Warna permukaan varian -->
+    <color name="skeleton_placeholder">#E0E0E0</color> <!-- Warna placeholder skeleton -->
+    <color name="skeleton_highlight">#BDBDBD</color> <!-- Warna sorotan skeleton -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 </resources>

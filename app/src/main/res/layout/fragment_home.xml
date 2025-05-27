@@ -91,8 +91,8 @@
 
                         <ImageButton
                             android:id="@+id/imgProfile"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:layout_gravity="end"
                             android:layout_marginEnd="16dp"
                             android:background="@android:color/transparent"
@@ -102,12 +102,13 @@
 
                         <ImageButton
                             android:id="@+id/imgNotification"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_gravity="end"
                             android:layout_marginEnd="8dp"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_notifications"
+                            android:scaleType="fitCenter"
                             app:tint="@color/white"
                             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
@@ -272,6 +273,52 @@
 
                 </HorizontalScrollView>
 
+                <!--Discount Product-->
+                <LinearLayout
+                    android:id="@+id/discountProductContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="16dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/categoriesContainer"
+                    tools:ignore="MissingConstraints">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/discountProductTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Discount"
+                            android:textColor="@color/text_primary"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/discountProductSeeAll"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="end|center_vertical"-->
+<!--                            android:text="See All"-->
+<!--                            android:textColor="@color/text_secondary"-->
+<!--                            android:textSize="14dp"-->
+<!--                            android:textStyle="bold" />-->
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/discountProductRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"/>
+                </LinearLayout>
+
                 <!--Popular Products-->
                 <LinearLayout
                     android:id="@+id/popolarProductsContainer"
@@ -280,7 +327,7 @@
                     android:orientation="vertical"
                     android:layout_margin="16dp"
                     android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/categoriesContainer"
+                    app:layout_constraintTop_toBottomOf="@id/discountProductContainer"
                     tools:ignore="MissingConstraints">
 
                     <LinearLayout
@@ -298,16 +345,16 @@
                             android:textSize="20dp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/popularProductsSeeAll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            android:text="See All"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="14dp"
-                            android:textStyle="bold"
-                            tools:ignore="TextSizeCheck" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/popularProductsSeeAll"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="end|center_vertical"-->
+<!--                            android:text="See All"-->
+<!--                            android:textColor="@color/text_secondary"-->
+<!--                            android:textSize="14dp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            tools:ignore="TextSizeCheck" />-->
 
                     </LinearLayout>
 

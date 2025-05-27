@@ -1,7 +1,6 @@
 package com.example.uts_a22202302996.profile;
 
 import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
-import static com.example.uts_a22202302996.auth.LoginActivity.URL;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -40,10 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -92,13 +89,13 @@ public class EditProfile extends AppCompatActivity {
         ivBack = findViewById(R.id.ivBack);
         imgProfile = findViewById(R.id.imgProfile);
         btnChangePhoto = findViewById(R.id.btnChangeImage);
-        etProfile_Nama = findViewById(R.id.etProfile_Nama);
-        etProfile_Email = findViewById(R.id.etProfile_Email);
-        etProfile_Alamat = findViewById(R.id.etProfile_Alamat);
-        etProfile_Kota = findViewById(R.id.etProfile_Kota);
-        etProfile_Provinsi = findViewById(R.id.etProfile_Province);
-        etProfile_Telp = findViewById(R.id.etProfile_Telp);
-        etProfile_Kodepos = findViewById(R.id.etProfile_Kodepos);
+        etProfile_Nama = findViewById(R.id.tiName);
+        etProfile_Email = findViewById(R.id.tiEmail);
+        etProfile_Alamat = findViewById(R.id.tiAddress);
+        etProfile_Kota = findViewById(R.id.tiCity);
+        etProfile_Provinsi = findViewById(R.id.tiProvince);
+        etProfile_Telp = findViewById(R.id.tiTelp);
+        etProfile_Kodepos = findViewById(R.id.tiPostalCode);
         btnSubmit = findViewById(R.id.btnSubmit);
 
         getProfil(username);

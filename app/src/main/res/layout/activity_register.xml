@@ -78,7 +78,7 @@
                 app:counterMaxLength="50">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ti_nama"
+                    android:id="@+id/tiName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -106,7 +106,7 @@
                 app:counterMaxLength="50">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ti_username"
+                    android:id="@+id/tiUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -134,7 +134,7 @@
                 app:counterMaxLength="50">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ti_email"
+                    android:id="@+id/tiEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -160,7 +160,7 @@
                 app:boxCornerRadiusBottomEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ti_password"
+                    android:id="@+id/tiPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -185,7 +185,7 @@
                 app:boxCornerRadiusBottomEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ti_konfirmasi_password"
+                    android:id="@+id/tiConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -194,7 +194,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_register"
+                android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -209,7 +209,7 @@
                 app:startIconDrawable="@drawable/ic_user" />
 
             <TextView
-                android:id="@+id/tv_kembali"
+                android:id="@+id/tvBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

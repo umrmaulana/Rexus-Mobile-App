@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -55,13 +54,13 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         // Inisialisasi view dari layout
-        tv_kembali = findViewById(R.id.tv_kembali);
-        ti_nama = findViewById(R.id.ti_nama);
-        ti_email = findViewById(R.id.ti_email);
-        ti_username = findViewById(R.id.ti_username);
-        ti_password = findViewById(R.id.ti_password);
-        ti_konfirmasi_password = findViewById(R.id.ti_konfirmasi_password);
-        btn_register = findViewById(R.id.btn_register);
+        tv_kembali = findViewById(R.id.tvBack);
+        ti_nama = findViewById(R.id.tiName);
+        ti_email = findViewById(R.id.tiEmail);
+        ti_username = findViewById(R.id.tiUsername);
+        ti_password = findViewById(R.id.tiPassword);
+        ti_konfirmasi_password = findViewById(R.id.tiConfirmPassword);
+        btn_register = findViewById(R.id.btnRegister);
 
         // Tombol kembali: Arahkan ke LoginActivity
         tv_kembali.setOnClickListener(view -> {

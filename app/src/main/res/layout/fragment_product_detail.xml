@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="16dp">
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -16,15 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/imageButtonCart">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="0dp">
 
+            <!-- Product Image Section -->
             <FrameLayout
                 android:id="@+id/frameLayoutProduct"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="400dp"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/imageViewDetail"
@@ -56,6 +59,7 @@
 
             </FrameLayout>
 
+            <!-- Product Name Section-->
             <TextView
                 android:id="@+id/textViewMerkDetail"
                 android:layout_width="wrap_content"
@@ -64,23 +68,44 @@
                 android:text="Nama Produk"
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayoutProduct"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-            <TextView
-                android:id="@+id/textViewKategori"
+            <!-- Category Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewKategori"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Kategori Produk"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
+                app:cardBackgroundColor="@color/secondary"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMerkDetail"
+                app:layout_constraintStart_toStartOf="parent">
 
+                <TextView
+                    android:id="@+id/textViewKategori"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Kategori Produk"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Price and Discount Section-->
             <LinearLayout
+                android:id="@+id/linearLayoutHarga"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewKategori"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
                     android:id="@+id/textViewHargaDetail"
@@ -122,37 +147,78 @@
 
             </LinearLayout>
 
+            <!-- Description Section -->
             <TextView
                 android:id="@+id/textViewDeskripsiDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:ellipsize="end"
                 android:text="Deskripsi produk yang lebih panjang dan detail tentang produk ini. Deskripsi ini bisa mencakup fitur, spesifikasi, dan informasi penting lainnya."
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textViewStokDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Stok: 10"
-                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutHarga"
+                app:layout_constraintBottom_toTopOf="@+id/stockSection"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/txView"
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDeskripsiDetail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Stock Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/stockSection"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="View: 0"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:layout_gravity="end"
+                android:layout_marginTop="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textViewStokDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Stok: 10"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:contentDescription="view"
+                    android:src="@drawable/ic_view"
+
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/txView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/txView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10x"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <ImageButton

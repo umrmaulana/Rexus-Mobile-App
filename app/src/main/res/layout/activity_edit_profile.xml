@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".profile.EditProfile">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="@color/black"
-        app:title="Edit Profile">
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/ivBack"
@@ -34,7 +34,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"/>
 
-    </Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -79,6 +79,10 @@
             app:boxStrokeColor="@color/secondary"
             app:boxStrokeWidth="2dp"
             app:endIconMode="clear_text"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:startIconDrawable="@drawable/ic_user"
             app:layout_constraintTop_toBottomOf="@id/btnChangeImage"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +90,7 @@
             android:layout_marginTop="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProfile_Nama"
+                android:id="@+id/tiName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -100,6 +104,10 @@
             android:hint="Email"
             app:boxStrokeColor="@color/secondary"
             app:boxStrokeWidth="2dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_email"
             app:layout_constraintTop_toBottomOf="@id/tfNama"
@@ -108,7 +116,7 @@
             android:layout_marginTop="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProfile_Email"
+                android:id="@+id/tiEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress" />
@@ -122,6 +130,10 @@
             android:hint="Alamat"
             app:boxStrokeColor="@color/secondary"
             app:boxStrokeWidth="2dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_location"
             app:layout_constraintTop_toBottomOf="@id/tfEmail"
@@ -130,7 +142,7 @@
             android:layout_marginTop="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProfile_Alamat"
+                android:id="@+id/tiAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -144,6 +156,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:hint="Kota"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:boxStrokeColor="@color/secondary"
             app:startIconDrawable="@drawable/ic_city"
             app:endIconMode="clear_text"
@@ -152,7 +168,7 @@
             app:layout_constraintEnd_toStartOf="@id/tfTelp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProfile_Kota"
+                android:id="@+id/tiCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -166,6 +182,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
             android:hint="Telpon"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:boxStrokeColor="@color/secondary"
             app:startIconDrawable="@drawable/ic_call"
             app:endIconMode="clear_text"
@@ -174,7 +194,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProfile_Telp"
+                android:id="@+id/tiTelp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -188,6 +208,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:hint="Kode Pos"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:boxStrokeColor="@color/secondary"
             app:startIconDrawable="@drawable/ic_postalcode"
             app:endIconMode="clear_text"
@@ -196,7 +220,7 @@
             app:layout_constraintEnd_toStartOf="@id/tfProvinsi">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProfile_Kodepos"
+                android:id="@+id/tiPostalCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -210,6 +234,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
             android:hint="Provinsi"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:boxStrokeColor="@color/secondary"
             app:startIconDrawable="@drawable/ic_province"
             app:endIconMode="clear_text"
@@ -218,13 +246,13 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProfile_Province"
+                android:id="@+id/tiProvince"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmit"
             android:layout_width="0dp"
             android:layout_height="60dp"
@@ -232,9 +260,9 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="@color/primary"
             app:icon="@drawable/ic_login"
             app:iconGravity="textStart"
+            app:cornerRadius="12dp"
             app:layout_constraintTop_toBottomOf="@id/tfProvinsi"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

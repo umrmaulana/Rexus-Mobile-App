@@ -68,12 +68,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Inisialisasi komponen UI
-        tv_register = findViewById(R.id.tv_register);
-        etUsername = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
+        tv_register = findViewById(R.id.tvRegister);
+        etUsername = findViewById(R.id.tiEmail);
+        etPassword = findViewById(R.id.tiPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        tv_forgot_password = findViewById(R.id.tv_forgot_password);
-        tv_guest_login = findViewById(R.id.tv_guest_login);
+        tv_forgot_password = findViewById(R.id.tvForgotPassword);
+        tv_guest_login = findViewById(R.id.tvGuestLogin);
 
         // Klik "Belum punya akun?"
         tv_register.setOnClickListener(view -> {

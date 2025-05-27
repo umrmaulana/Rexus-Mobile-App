@@ -29,6 +29,7 @@ import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.auth.LoginActivity;
 import com.example.uts_a22202302996.databinding.FragmentProfileBinding;
+import com.example.uts_a22202302996.profile.ChangePassword;
 import com.example.uts_a22202302996.profile.EditProfile;
 
 import org.json.JSONObject;
@@ -100,6 +101,13 @@ public class ProfileFragment extends Fragment {
             // Mengatur listener untuk tombol edit profile
             binding.editProfile.setOnClickListener(v -> {
                 Intent intent = new Intent(requireContext(), EditProfile.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+            });
+
+            // Mengatur listener untuk tombol ganti password
+            binding.changePassword.setOnClickListener(v->{
+                Intent intent = new  Intent(requireContext(), ChangePassword.class);
                 intent.putExtra("username", username);
                 startActivity(intent);
             });
