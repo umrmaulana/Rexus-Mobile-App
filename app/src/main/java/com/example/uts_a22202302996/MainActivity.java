@@ -8,16 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.uts_a22202302996.databinding.ActivityMainBinding;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
-import com.example.uts_a22202302996.product.Product;
-import com.example.uts_a22202302996.product.ProductDetailFragment;
-import com.example.uts_a22202302996.ui.home.HomeFragment;
-import com.example.uts_a22202302996.ui.product.ProductFragment;
+import com.example.uts_a22202302996.model.Product;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;

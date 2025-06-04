@@ -1,4 +1,4 @@
-package com.example.uts_a22202302996.product;
+package com.example.uts_a22202302996.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;

@@ -10,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.uts_a22202302996.profile.Profile;
+import com.example.uts_a22202302996.model.Profile;
 import com.example.uts_a22202302996.profile.ProfileRepository;
 
 public class ProfileViewModel extends AndroidViewModel { // Ganti ke AndroidViewModel
@@ -22,7 +22,7 @@ public class ProfileViewModel extends AndroidViewModel { // Ganti ke AndroidView
         super(application);
         repository = new ProfileRepository(application);
         SharedPreferences prefs = application.getSharedPreferences("login_session", MODE_PRIVATE);
-        String username = prefs.getString("username", "");
+        String username = prefs.getString("username", "Guest");
 
         profile = repository.getProfile(username);
 

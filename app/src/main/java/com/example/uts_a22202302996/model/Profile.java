@@ -1,4 +1,4 @@
-package com.example.uts_a22202302996.profile;
+package com.example.uts_a22202302996.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

@@ -2,10 +2,8 @@ package com.example.uts_a22202302996.adapter;
 
 import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +19,7 @@ import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
-import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -30,7 +30,7 @@
     <!-- Product Detail -->
     <fragment
         android:id="@+id/productDetailFragment"
-        android:name="com.example.uts_a22202302996.product.ProductDetailFragment"
+        android:name="com.example.uts_a22202302996.fragment.ProductDetailFragment"
         android:label="Product Detail"
         tools:layout="@layout/fragment_product_detail" />
 

@@ -1,4 +1,4 @@
-package com.example.uts_a22202302996.product;
+package com.example.uts_a22202302996.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.adapter.ProductAdapter;
 import com.example.uts_a22202302996.adapter.ProductSkeletonAdapter;
+import com.example.uts_a22202302996.model.Product;
 
 import java.util.ArrayList;
 

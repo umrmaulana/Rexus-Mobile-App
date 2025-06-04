@@ -1,4 +1,4 @@
-package com.example.uts_a22202302996;
+package com.example.uts_a22202302996.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.uts_a22202302996.auth.LoginActivity;
+import com.example.uts_a22202302996.MainActivity;
+import com.example.uts_a22202302996.R;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     private Runnable runnable;
 
@@ -30,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }

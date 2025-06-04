@@ -1,4 +1,4 @@
-package com.example.uts_a22202302996.profile;
+package com.example.uts_a22202302996.activity;
 
 import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
 
@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,8 @@ import com.bumptech.glide.Glide;
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
+import com.example.uts_a22202302996.model.DataUser;
+import com.example.uts_a22202302996.model.Profile;
 import com.example.uts_a22202302996.ui.profile.ProfileViewModel;
 
 import org.json.JSONException;
@@ -55,7 +58,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EditProfile extends AppCompatActivity {
+public class EditProfileAvticity extends AppCompatActivity {
 
     private ProfileViewModel viewModel;
 
@@ -175,7 +178,7 @@ public class EditProfile extends AppCompatActivity {
                             etProfile_Kodepos.setText(getValidString(data, "kodepos"));
                             foto = getValidString(data, "foto");
                             if (!foto.isEmpty()) {
-                                Glide.with(EditProfile.this)
+                                Glide.with(EditProfileAvticity.this)
                                         .load(BASE_URL_IMAGE + "avatar/" + foto)
                                         .centerCrop()
                                         .placeholder(R.drawable.ic_user)
@@ -225,7 +228,7 @@ public class EditProfile extends AppCompatActivity {
                             if (response.body() != null) {
                                 JSONObject json = new JSONObject(response.body().string());
 
-                                Toast.makeText(EditProfile.this, json.getString("message"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditProfileAvticity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
                                 getProfil(data.getUsername());
 
                                 String nama = json.getJSONObject("data").getString("nama");
@@ -251,7 +254,7 @@ public class EditProfile extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        new AlertDialog.Builder(EditProfile.this)
+                        new AlertDialog.Builder(EditProfileAvticity.this)
                                 .setMessage("Simpan Gagal, Error: " + t.toString())
                                 .setNegativeButton("Retry", null)
                                 .create()
@@ -314,6 +317,7 @@ public class EditProfile extends AppCompatActivity {
         }
     }
 
+    @NonNull
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -393,7 +397,7 @@ public class EditProfile extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             String resString = response.body().string();
                             JSONObject json = new JSONObject(resString);
-                            Toast.makeText(EditProfile.this, json.getString("message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileAvticity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
 
                             if (json.getInt("result") == 1) {
                                 // Refresh profil atau aksi lain
@@ -403,18 +407,18 @@ public class EditProfile extends AppCompatActivity {
                             // Coba baca errorBody jika response.body() null
                             String error = response.errorBody() != null ? response.errorBody().string() : "Tidak diketahui";
                             Log.e("UploadFoto", "Error body: " + error);
-                            Toast.makeText(EditProfile.this, "Gagal mengunggah: " + error, Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditProfileAvticity.this, "Gagal mengunggah: " + error, Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(EditProfile.this, "Gagal parsing response", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileAvticity.this, "Gagal parsing response", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(EditProfile.this, "Gagal terhubung: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileAvticity.this, "Gagal terhubung: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 

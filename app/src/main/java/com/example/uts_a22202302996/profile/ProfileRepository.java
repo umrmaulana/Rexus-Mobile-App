@@ -1,17 +1,16 @@
 package com.example.uts_a22202302996.profile;
 
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
+import com.example.uts_a22202302996.model.Profile;
 
 import org.json.JSONObject;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;

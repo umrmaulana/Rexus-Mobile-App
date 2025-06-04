@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +20,7 @@ import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
-import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.model.Product;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;

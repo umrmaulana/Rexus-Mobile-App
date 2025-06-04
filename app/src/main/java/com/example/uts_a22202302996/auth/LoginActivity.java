@@ -133,15 +133,19 @@ public class LoginActivity extends AppCompatActivity {
                         // Cek hasil login dari server
                         if (json.getString("result").equals("1")) {
                             // Ambil data dari response
+                            String userIdString = json.getJSONObject("data").getString("id");
                             String nama = json.getJSONObject("data").getString("nama");
                             String username = json.getJSONObject("data").getString("username");
                             String email = json.getJSONObject("data").getString("email");
                             String foto = json.getJSONObject("data").getString("foto");
 
+                            int userId = Integer.parseInt(userIdString);
+
                             // Simpan data login ke SharedPreferences
                             SharedPreferences sharedPreferences = getSharedPreferences("login_session", MODE_PRIVATE);
                             editor = sharedPreferences.edit();
                             editor.putBoolean("isLoggedIn", true);
+                            editor.putInt("user_id", userId);
                             editor.putString("username", username);
                             editor.putString("nama", nama);
                             editor.putString("email", email);

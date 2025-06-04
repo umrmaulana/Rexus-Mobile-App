@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
-import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.model.Product;
 import com.example.uts_a22202302996.api.ProductResponse;
 
 import java.util.ArrayList;

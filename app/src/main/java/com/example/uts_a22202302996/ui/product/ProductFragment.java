@@ -22,12 +22,12 @@ import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.databinding.FragmentProductBinding;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
-import com.example.uts_a22202302996.product.CategoryResultFragment;
-import com.example.uts_a22202302996.product.Product;
-import com.example.uts_a22202302996.product.ProductDetailFragment;
-import com.example.uts_a22202302996.product.ProductListFragment;
+import com.example.uts_a22202302996.fragment.CategoryResultFragment;
+import com.example.uts_a22202302996.model.Product;
+import com.example.uts_a22202302996.fragment.ProductDetailFragment;
+import com.example.uts_a22202302996.fragment.ProductListFragment;
 import com.example.uts_a22202302996.api.ProductResponse;
-import com.example.uts_a22202302996.product.SearchResultFragment;
+import com.example.uts_a22202302996.fragment.SearchResultFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;

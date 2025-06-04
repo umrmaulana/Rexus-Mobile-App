@@ -1,8 +1,7 @@
-package com.example.uts_a22202302996.profile;
+package com.example.uts_a22202302996.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangePassword extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
 
     private String username;
     private ProfileViewModel viewModel;
@@ -67,9 +66,9 @@ public class ChangePassword extends AppCompatActivity {
                             String status = json.getString("status");
                             String message = json.getString("message");
 
-                            Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePasswordActivity.this, message, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(ChangePassword.this, "Gagal menghubungi server", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePasswordActivity.this, "Gagal menghubungi server", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -78,7 +77,7 @@ public class ChangePassword extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(ChangePassword.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePasswordActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });

@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy;
 
 import androidx.room.Query;
 
+import com.example.uts_a22202302996.model.Profile;
+
 @Dao
 public interface ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

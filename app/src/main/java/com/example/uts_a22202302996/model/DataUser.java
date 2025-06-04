@@ -1,4 +1,4 @@
-package com.example.uts_a22202302996.profile;
+package com.example.uts_a22202302996.model;
 
 public class DataUser {
     private String username, email, nama, alamat, kota, provinsi, telp, kodepos;

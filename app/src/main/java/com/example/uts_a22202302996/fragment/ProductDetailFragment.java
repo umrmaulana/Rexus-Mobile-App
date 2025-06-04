@@ -1,9 +1,10 @@
-package com.example.uts_a22202302996.product;
+package com.example.uts_a22202302996.fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
 import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
@@ -25,7 +26,8 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.R;
-import com.example.uts_a22202302996.ui.product.ProductFragment;
+import com.example.uts_a22202302996.model.Product;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -34,11 +36,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import androidx.activity.OnBackPressedCallback;
-import androidx.navigation.fragment.NavHostFragment;
 
 public class ProductDetailFragment extends Fragment {
-
-    private static final String ARG_PRODUCT = "product";
 
     private ArrayList<Product> listcart;
     private SharedPreferences sharedPreferences;
@@ -115,17 +114,7 @@ public class ProductDetailFragment extends Fragment {
 
         imageButtonBack.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-
-            if (getActivity() != null) {
-                navController.popBackStack(); // kembali ke HomeFragment
-            }
-            if (!navController.popBackStack()) {
-                Intent intent = new Intent(requireContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                requireActivity().finish();
-            }
-
+            navController.popBackStack();
         });
 
         // Set product data

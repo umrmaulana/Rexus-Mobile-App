@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.adapter.CartAdapter;
 import com.example.uts_a22202302996.databinding.FragmentCartBinding;
-import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.model.Product;
 import com.google.gson.Gson;
 
 import java.text.NumberFormat;

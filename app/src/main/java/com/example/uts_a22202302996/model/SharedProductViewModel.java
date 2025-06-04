@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.uts_a22202302996.product.Product;
-
 import java.util.List;
 
 public class SharedProductViewModel extends ViewModel {

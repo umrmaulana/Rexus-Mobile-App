@@ -27,7 +27,7 @@ import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
-import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.model.Product;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -81,16 +81,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         // Set data ke tampilan
         holder.textViewMerk.setText(product.getMerk());
 
-        // Get SharedPreferences (declare once)
-//        SharedPreferences sharedPreferences = fragment.requireContext().getSharedPreferences("product_views", Context.MODE_PRIVATE);
-
-        // Retrieve the current view count for this product
-//        String productKey = "view_count_" + product.getKode();
-//        int savedViewCount = sharedPreferences.getInt(productKey, 0);
-
-        // Update the TextView with the saved view count
-//        holder.txView.setText("view : " + savedViewCount);
-
         // Format harga
         String hargaJual = formatRupiah(String.valueOf(product.getHargaJual()));
         String hargaPokok = formatRupiah(String.valueOf(product.getHargapokok()));
@@ -140,12 +130,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageViewProduct);
-
-        // Klik item untuk membuka detail produk
-//        holder.itemView.setOnClickListener(v -> {
-//            ProductDetailDialog dialog = new ProductDetailDialog(product);
-//            dialog.show(fragment.getChildFragmentManager(), "ProductDetailDialog");
-//        });
 
         // Klik item untuk membuka detail produk
         holder.itemView.setOnClickListener(v -> {

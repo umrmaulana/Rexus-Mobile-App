@@ -1,4 +1,4 @@
-package com.example.uts_a22202302996;
+package com.example.uts_a22202302996.activity;
 
 import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL;
 
@@ -20,9 +20,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uts_a22202302996.MainActivity;
+import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.adapter.SearchAdapter;
 import com.example.uts_a22202302996.api.RegisterAPI;
-import com.example.uts_a22202302996.product.Product;
+import com.example.uts_a22202302996.model.Product;
 import com.example.uts_a22202302996.api.ProductResponse;
 
 import java.util.ArrayList;

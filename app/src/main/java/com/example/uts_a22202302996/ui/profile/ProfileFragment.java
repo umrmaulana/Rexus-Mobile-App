@@ -1,7 +1,6 @@
 package com.example.uts_a22202302996.ui.profile;
 
 import static com.example.uts_a22202302996.api.ServerAPI.BASE_URL_IMAGE;
-import static com.example.uts_a22202302996.auth.LoginActivity.URL;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,12 +22,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.uts_a22202302996.R;
+import com.example.uts_a22202302996.activity.ShippingAddressActivity;
 import com.example.uts_a22202302996.api.RegisterAPI;
 import com.example.uts_a22202302996.api.ServerAPI;
 import com.example.uts_a22202302996.auth.LoginActivity;
 import com.example.uts_a22202302996.databinding.FragmentProfileBinding;
-import com.example.uts_a22202302996.profile.ChangePassword;
-import com.example.uts_a22202302996.profile.EditProfile;
+import com.example.uts_a22202302996.activity.ChangePasswordActivity;
+import com.example.uts_a22202302996.activity.EditProfileAvticity;
 
 import org.json.JSONObject;
 
@@ -100,15 +98,21 @@ public class ProfileFragment extends Fragment {
 
             // Mengatur listener untuk tombol edit profile
             binding.editProfile.setOnClickListener(v -> {
-                Intent intent = new Intent(requireContext(), EditProfile.class);
+                Intent intent = new Intent(requireContext(), EditProfileAvticity.class);
                 intent.putExtra("username", username);
                 startActivity(intent);
             });
 
             // Mengatur listener untuk tombol ganti password
             binding.changePassword.setOnClickListener(v->{
-                Intent intent = new  Intent(requireContext(), ChangePassword.class);
+                Intent intent = new  Intent(requireContext(), ChangePasswordActivity.class);
                 intent.putExtra("username", username);
+                startActivity(intent);
+            });
+
+            // Mengatur listener untuk tombol alamat pengiriman
+            binding.shippingAddress.setOnClickListener(v -> {
+                Intent intent = new Intent(requireContext(), ShippingAddressActivity.class);
                 startActivity(intent);
             });
 

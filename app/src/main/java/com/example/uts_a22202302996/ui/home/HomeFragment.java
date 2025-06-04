@@ -27,7 +27,7 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.uts_a22202302996.R;
-import com.example.uts_a22202302996.SearchActivity;
+import com.example.uts_a22202302996.activity.SearchActivity;
 import com.example.uts_a22202302996.adapter.DiscountAdapter;
 import com.example.uts_a22202302996.adapter.ProductAdapter;
 import com.example.uts_a22202302996.adapter.DiscountSkeletonAdapter;
@@ -195,7 +195,7 @@ public class HomeFragment extends Fragment {
         // Ambil username dari SharedPreferences (hanya untuk inisialisasi)
         SharedPreferences sharedPreferences = requireActivity()
                 .getSharedPreferences("login_session", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "");
+        String username = sharedPreferences.getString("username", "Guest");
 
         // Tampilkan loading indicator
         binding.loadingProgressBar.setVisibility(View.VISIBLE);
