@@ -1,5 +1,7 @@
 package com.example.uts_a22202302996.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ShipAddress {
     private int id;
     private int user_id;
@@ -10,6 +12,7 @@ public class ShipAddress {
     private String city_name;
     private String recipt_name;
     private String address;
+    @SerializedName("is_active")
     private String is_active;
 
     public int getId() { return id; }
@@ -25,5 +28,9 @@ public class ShipAddress {
 
     public void setIs_active(String is_active) {
         this.is_active = is_active;
+    }
+
+    public boolean isActive() {
+        return "1".equals(is_active);
     }
 }

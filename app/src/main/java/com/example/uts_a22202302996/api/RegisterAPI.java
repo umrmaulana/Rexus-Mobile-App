@@ -136,4 +136,17 @@ public interface RegisterAPI {
             @Field("postal_code") int postal_code
     );
 
+    @GET("get_address_active.php")
+    Call<List<ShipAddress>> getActiveAddress(@Query("user_id") int userId);
+
+    @FormUrlEncoded
+    @POST("api_ongkir.php")
+    Call<ResponseBody> cekongkir(
+            @Field("origin") String origin,
+            @Field("destination") String destination,
+            @Field("weight") int weight,
+            @Field("courier") String courier
+    );
+
+
 }

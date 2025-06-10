@@ -151,6 +151,8 @@ public class ShippingAddressActivity extends AppCompatActivity {
                     Toast.makeText(ShippingAddressActivity.this, "Alamat aktif diperbarui", Toast.LENGTH_SHORT).show();
                     // Refresh data setelah update
                     loadAddresses();
+                    setResult(RESULT_OK);
+                    finish();
                 } else {
                     Toast.makeText(ShippingAddressActivity.this, "Gagal memperbarui alamat", Toast.LENGTH_SHORT).show();
                 }

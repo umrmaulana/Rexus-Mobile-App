@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.uts_a22202302996.activity.CheckoutActivity;
 import com.example.uts_a22202302996.databinding.ActivityMainBinding;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
 import com.example.uts_a22202302996.model.Product;
