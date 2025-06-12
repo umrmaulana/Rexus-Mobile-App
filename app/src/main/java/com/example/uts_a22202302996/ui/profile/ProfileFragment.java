@@ -80,18 +80,6 @@ public class ProfileFragment extends Fragment {
                             .getSharedPreferences("login_session", Context.MODE_PRIVATE);
                     sharedPreferences.edit().clear().apply();
 
-                    // Menghapus data product views dari SharedPreferences
-                    requireActivity().getSharedPreferences("product_views", Context.MODE_PRIVATE)
-                            .edit()
-                            .clear()
-                            .apply();
-
-                    // Menghapus data keranjang dari SharedPreferences
-                    requireActivity().getSharedPreferences("product", Context.MODE_PRIVATE)
-                            .edit()
-                            .clear()
-                            .apply();
-
                     Intent intent = new Intent(requireContext(), LoginActivity.class);
                     startActivity(intent);
                     requireActivity().finish();
@@ -125,6 +113,11 @@ public class ProfileFragment extends Fragment {
             // Mengatur listener untuk tombol alamat pengiriman
             binding.shippingAddress.setOnClickListener(v -> {
                 Intent intent = new Intent(requireContext(), ShippingAddressActivity.class);
+                startActivity(intent);
+            });
+
+            binding.orderHistory.setOnClickListener( v -> {
+                Intent intent = new Intent(requireContext(), com.example.uts_a22202302996.activity.OrderHistoryActivity.class);
                 startActivity(intent);
             });
 

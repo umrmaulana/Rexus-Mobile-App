@@ -65,6 +65,7 @@ public class AddAddressActivity extends AppCompatActivity {
         spinnerKota = findViewById(R.id.spinKota);
         EditText tiName = findViewById(R.id.tiName);
         EditText tiAddress = findViewById(R.id.tiAddress);
+        EditText tiPhone = findViewById(R.id.tiPhone);
         Button btnSubmit = findViewById(R.id.btnSubmit);
 
         loadProvinsi();
@@ -103,13 +104,14 @@ public class AddAddressActivity extends AppCompatActivity {
             // Handle the submit action here
             String name = tiName.getText().toString();
             String address = tiAddress.getText().toString();
+            String no_tlp = tiPhone.getText().toString();
 
             if(name.isEmpty() || address.isEmpty()){
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            prossesAddAddress(name, address, provinsi_id, provinsi_name, kota_id, kota_name, postal_code);
+            prossesAddAddress(name, address, provinsi_id, provinsi_name, kota_id, kota_name, no_tlp, postal_code);
         });
 
         ImageView ivBack = findViewById(R.id.ivBack);
@@ -201,13 +203,13 @@ public class AddAddressActivity extends AppCompatActivity {
         });
     }
 
-    private void prossesAddAddress(String name, String address, String provinsi, String provinsi_name, String kota, String kota_name, int postal_code) {
+    private void prossesAddAddress(String name, String address, String provinsi, String provinsi_name, String kota, String kota_name, String no_tlp, int postal_code) {
         SharedPreferences sharedPreferences = getSharedPreferences("login_session", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", 1);
 
         RegisterAPI apiInterface = ServerAPI.getClient().create(RegisterAPI.class);
 
-        Call<ResponseBody> call = apiInterface.addShipAddress(userId, provinsi, provinsi_name, kota, kota_name,address, name, postal_code);
+        Call<ResponseBody> call = apiInterface.addShipAddress(userId, provinsi, provinsi_name, kota, kota_name,address, name, no_tlp, postal_code);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

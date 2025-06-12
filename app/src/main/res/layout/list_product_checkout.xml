@@ -19,22 +19,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="3dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <ImageView
                 android:id="@+id/imageViewProduct"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:layout_gravity="center"
-                android:padding="12dp"
-                android:elevation="2dp">
+                android:layout_marginStart="10dp"
+                android:elevation="2dp"
+                android:padding="12dp">
 
                 <TextView
                     android:id="@+id/tvProduct"
@@ -53,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvProduct"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="10dp"
                     android:text="Rp 4.000.000"
                     android:textColor="@color/primary"
                     android:textSize="16sp"
@@ -63,13 +64,15 @@
                     android:id="@+id/tvHargaDiskon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvPrice"
-                    android:layout_marginTop="3dp"
+                    android:layout_below="@+id/tvProduct"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toEndOf="@+id/tvPrice"
                     android:paddingHorizontal="4dp"
                     android:text="Rp 80.000"
-                    android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvQty"

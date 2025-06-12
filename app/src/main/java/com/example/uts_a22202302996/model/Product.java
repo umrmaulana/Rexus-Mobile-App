@@ -36,6 +36,9 @@ public class Product implements Serializable {
     @SerializedName("foto")
     private String foto;
 
+    @SerializedName("weight")
+    private int weight;
+
     @SerializedName("deskripsi")
     private String deskripsi;
 
@@ -58,6 +61,7 @@ public class Product implements Serializable {
     public Double getHargaJual() { return hargaJual != null ? hargaJual : 0; }
     public int getStok() { return stok; }
     public String getFoto() { return foto; }
+    public int getWeight() { return weight; }
     public String getDeskripsi() { return deskripsi; }
     public int getDiskonJual() { return diskonJual != null ? diskonJual : 0; }
     public int getDiskonBeli() { return diskonBeli != null ? diskonBeli : 0; }
