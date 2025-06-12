@@ -8,6 +8,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -114,6 +115,7 @@ public interface RegisterAPI {
             @Field("city_name") String city_name,
             @Field("address") String address,
             @Field("recipt_name") String recipt_name,
+            @Field("no_tlp") String no_tlp,
             @Field("postal_code") int postal_code
     );
 
@@ -133,7 +135,50 @@ public interface RegisterAPI {
             @Field("city_name") String city_name,
             @Field("address") String address,
             @Field("recipt_name") String recipt_name,
+            @Field("no_tlp") String no_tlp,
             @Field("postal_code") int postal_code
     );
 
+    @GET("get_address_active.php")
+    Call<List<ShipAddress>> getActiveAddress(@Query("user_id") int userId);
+
+    @FormUrlEncoded
+    @POST("api_ongkir.php")
+    Call<ResponseBody> cekongkir(
+            @Field("origin") String origin,
+            @Field("destination") String destination,
+            @Field("weight") int weight,
+            @Field("courier") String courier
+    );
+
+    @FormUrlEncoded
+    @POST("get_shipping_cost.php")
+    Call<ResponseBody> getShippingCost(
+            @Field("origin") int origin,
+            @Field("destination") int destination,
+            @Field("weight") int weight,
+            @Field("courier") String courier
+    );
+
+    @POST("post_checkout.php")
+    Call<ResponseBody> createOrder(@Body RequestBody orderData);
+
+    @Multipart
+    @POST("upload_payment_proof.php")
+    Call<ResponseBody> uploadPaymentProof(
+            @Part("order_id") RequestBody orderId,
+            @Part MultipartBody.Part proof_transfer
+    );
+
+    @FormUrlEncoded
+    @POST("get_order_details.php")
+    Call<ResponseBody> getOrderDetails(@Field("order_id") int orderId);
+
+    @FormUrlEncoded
+    @POST("get_order_history.php")
+    Call<ResponseBody> getOrderHistory(@Field("user_id") int userId);
+
+    @FormUrlEncoded
+    @POST("get_address_by_id.php")
+    Call<ShipAddressResponse> getAddressById(@Field("address_id") int addressId);
 }

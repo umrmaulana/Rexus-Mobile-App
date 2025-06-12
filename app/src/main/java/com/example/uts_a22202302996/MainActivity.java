@@ -1,16 +1,21 @@
 package com.example.uts_a22202302996;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.uts_a22202302996.activity.CheckoutActivity;
 import com.example.uts_a22202302996.databinding.ActivityMainBinding;
 import com.example.uts_a22202302996.model.SharedProductViewModel;
 import com.example.uts_a22202302996.model.Product;
@@ -34,6 +39,23 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Initialize LocalBroadcastManager
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+
+        // Create broadcast receiver for cart updates
+        BroadcastReceiver cartUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if ("com.example.uts_a22202302996.UPDATE_CART_BADGE".equals(intent.getAction())) {
+                    updateCartBadge();
+                }
+            }
+        };
+
+        // Register with LocalBroadcastManager
+        IntentFilter filter = new IntentFilter("com.example.uts_a22202302996.UPDATE_CART_BADGE");
+        localBroadcastManager.registerReceiver(cartUpdateReceiver, filter);
+        
         // Setup BottomNavigationView dan Navigation
         setupNavigation();
 

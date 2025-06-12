@@ -116,6 +116,11 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             });
 
+            binding.orderHistory.setOnClickListener( v -> {
+                Intent intent = new Intent(requireContext(), com.example.uts_a22202302996.activity.OrderHistoryActivity.class);
+                startActivity(intent);
+            });
+
             // Mengatur listener untuk tombol whatsapp
             binding.whatsapp.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_VIEW);

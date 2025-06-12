@@ -2,6 +2,7 @@ package com.example.uts_a22202302996.ui.cart;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +18,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uts_a22202302996.MainActivity;
+import com.example.uts_a22202302996.R;
+import com.example.uts_a22202302996.activity.CheckoutActivity;
 import com.example.uts_a22202302996.adapter.CartAdapter;
 import com.example.uts_a22202302996.databinding.FragmentCartBinding;
 import com.example.uts_a22202302996.model.Product;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import java.text.NumberFormat;
@@ -48,6 +52,22 @@ public class CartFragment extends Fragment {
         // Inflate layout fragment
         binding = FragmentCartBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // Set  button checkout listener
+        SharedPreferences userPreferences = requireActivity().getSharedPreferences("login_session", MODE_PRIVATE);
+        String username = userPreferences.getString("username", "Guest");
+        if ("Guest".equals(username)) {
+            binding.btnCheckout.setOnClickListener(v -> {
+                BottomNavigationView bottomNav = requireActivity().findViewById(R.id.nav_view);
+                bottomNav.setSelectedItemId(R.id.navigation_profile);
+            });
+        } else {
+            binding.btnCheckout.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+                // Pass data keranjang ke CheckoutActivity
+                startActivity(intent);
+            });
+        }
 
         // List untuk menyimpan produk dari keranjang
         ArrayList<Product> listproduct = new ArrayList<>();
@@ -93,6 +113,6 @@ public class CartFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null; // Hindari memory leak dengan menghapus binding
+        binding = null;
     }
 }

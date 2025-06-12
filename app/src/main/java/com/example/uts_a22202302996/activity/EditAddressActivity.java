@@ -69,6 +69,7 @@ public class EditAddressActivity extends AppCompatActivity {
         spinnerCity = findViewById(R.id.spinKota);
         tiName = findViewById(R.id.tiName);
         tiAddress = findViewById(R.id.tiAddress);
+        EditText tiPhone = findViewById(R.id.tiPhone);
         Button btnSave = findViewById(R.id.btnSubmit);
 
         getAddress();
@@ -107,13 +108,14 @@ public class EditAddressActivity extends AppCompatActivity {
         btnSave.setOnClickListener(v -> {
             String name = tiName.getText().toString();
             String address = tiAddress.getText().toString();
+            String no_tlp = tiPhone.getText().toString();
 
             if(name.isEmpty() || address.isEmpty()){
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            updateAddress(name, address, provinsi_id, provinsi_name, kota_id, kota_name, postal_code);
+            updateAddress(name, address, provinsi_id, provinsi_name, kota_id, kota_name, no_tlp, postal_code);
         });
 
         ImageView ivBack = findViewById(R.id.ivBack);
@@ -206,10 +208,10 @@ public class EditAddressActivity extends AppCompatActivity {
         });
     }
 
-    private void updateAddress(String name, String address, String provinsi, String provinsi_name, String kota, String kota_name, int postal_code) {
+    private void updateAddress(String name, String address, String provinsi, String provinsi_name, String kota, String kota_name, String no_tlp, int postal_code) {
 
         RegisterAPI api = ServerAPI.getClient().create(RegisterAPI.class);
-        api.updateAddress(addressId, provinsi, provinsi_name, kota, kota_name, address, name, postal_code).enqueue(new Callback<Void>() {
+        api.updateAddress(addressId, provinsi, provinsi_name, kota, kota_name, address, name, no_tlp, postal_code).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

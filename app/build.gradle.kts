@@ -72,4 +72,6 @@ dependencies {
 
     implementation ("com.facebook.shimmer:shimmer:0.5.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    implementation("com.github.GrenderG:Toasty:1.5.2")
 }

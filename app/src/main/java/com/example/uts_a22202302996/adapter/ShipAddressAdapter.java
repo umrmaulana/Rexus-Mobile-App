@@ -55,6 +55,7 @@ public class ShipAddressAdapter extends RecyclerView.Adapter<ShipAddressAdapter.
         holder.tvProvince.setText(address.getProvince_name());
         holder.tvCity.setText(address.getCity_name());
         holder.tvPostalCode.setText(String.valueOf(address.getPostal_code()));
+        holder.tvPhone.setText(address.getNo_tlp());
         holder.radioSelected.setChecked("1".equals(address.getIs_active()));
 
         // Tambahkan onClickListener untuk seluruh item view
@@ -96,7 +97,7 @@ public class ShipAddressAdapter extends RecyclerView.Adapter<ShipAddressAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvAddress, tvProvince, tvCity, tvPostalCode;
+        TextView tvName, tvAddress, tvProvince, tvCity, tvPostalCode, tvPhone;
         RadioButton radioSelected;
         ImageView btnDelete, btnEdit;
 
@@ -107,6 +108,7 @@ public class ShipAddressAdapter extends RecyclerView.Adapter<ShipAddressAdapter.
             tvProvince = itemView.findViewById(R.id.tvProvince);
             tvCity = itemView.findViewById(R.id.tvCity);
             tvPostalCode = itemView.findViewById(R.id.tvPostalCode);
+            tvPhone = itemView.findViewById(R.id.tvPhone);
             radioSelected = itemView.findViewById(R.id.radioSelected);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnEdit = itemView.findViewById(R.id.btnEdit);
