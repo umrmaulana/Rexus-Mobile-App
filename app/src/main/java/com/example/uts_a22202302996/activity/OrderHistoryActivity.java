@@ -90,6 +90,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
         intent.putExtra("order_id", order.getId());
         intent.putExtra("order_number", order.getOrderNumber());
         startActivity(intent);
+        finish();
     }
 
     private void loadOrderHistory() {
