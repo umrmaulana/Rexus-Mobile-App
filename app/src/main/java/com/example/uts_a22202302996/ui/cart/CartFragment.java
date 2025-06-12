@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -74,19 +75,36 @@ public class CartFragment extends Fragment {
 
         // Load data keranjang dari SharedPreferences
         sharedPreferences = requireActivity().getSharedPreferences("product", MODE_PRIVATE);
+        boolean hasProduct = false;
+
         if (sharedPreferences.contains("listproduct")) {
             Gson gson = new Gson();
             String jsonText = sharedPreferences.getString("listproduct", null);
             Product[] productArray = gson.fromJson(jsonText, Product[].class);
-            for (Product product : productArray) {
-                listproduct.add(product);
+            if (productArray != null && productArray.length > 0) {
+                for (Product product : productArray) {
+                    listproduct.add(product);
+                }
+                Log.i("Info pref", listproduct.toString());
+                hasProduct = true;
             }
-            Log.i("Info pref", listproduct.toString());
         }
 
-        // Inisialisasi adapter untuk RecyclerView
-        CartAdapter adapter = new CartAdapter(listproduct);
+        // Referensi ke tampilan
         RecyclerView recyclerView = binding.recyclerView;
+        LinearLayout conNotFound = binding.conNotFound;
+
+        // Tampilkan tampilan yang sesuai
+        if (hasProduct) {
+            recyclerView.setVisibility(View.VISIBLE);
+            conNotFound.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            conNotFound.setVisibility(View.VISIBLE);
+        }
+
+        // Inisialisasi adapter jika ada produk
+        CartAdapter adapter = new CartAdapter(listproduct);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         recyclerView.setAdapter(adapter);
@@ -106,6 +124,32 @@ public class CartFragment extends Fragment {
 
         // Perbarui total harga saat data di-load
         adapter.notifyCartTotalChanged();
+
+        // Atur aksi untuk tombol checkout
+        if (!hasProduct) {
+            // Jika kosong, nonaktifkan tombol
+            binding.btnCheckout.setEnabled(false);
+            binding.btnCheckout.setAlpha(0.5f); // tampilan semi transparan
+        } else {
+            // Jika ada produk, tombol bisa diklik
+            if ("Guest".equals(username)) {
+                binding.btnCheckout.setOnClickListener(v -> {
+                    BottomNavigationView bottomNav = requireActivity().findViewById(R.id.nav_view);
+                    bottomNav.setSelectedItemId(R.id.navigation_profile);
+                });
+            } else {
+                binding.btnCheckout.setOnClickListener(v -> {
+                    Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+                    startActivity(intent);
+                });
+            }
+        }
+
+        // Navigasi dari btnAddItems ke fragment produk
+        binding.btnAddItems.setOnClickListener(v -> {
+            BottomNavigationView bottomNav = requireActivity().findViewById(R.id.nav_view);
+            bottomNav.setSelectedItemId(R.id.navigation_product); // atau navigation_product jika ada
+        });
 
         return root;
     }
