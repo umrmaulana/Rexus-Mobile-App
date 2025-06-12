@@ -150,7 +150,11 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        ivBack.setOnClickListener(v -> onBackPressed());
+        ivBack.setOnClickListener(v -> {
+            Intent intent = new Intent(OrderDetailActivity.this, OrderHistoryActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         // Show more items
         tvMoreItems.setOnClickListener(v -> {
@@ -404,5 +408,12 @@ public class OrderDetailActivity extends AppCompatActivity {
             e.printStackTrace();
             return dateString;
         }
+    }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(OrderDetailActivity.this, OrderHistoryActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
