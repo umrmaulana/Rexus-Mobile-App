@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel viewModel;
 
-    private FragmentProfileBinding binding; // Binding untuk mengakses komponen UI
+    private FragmentProfileBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,32 +52,26 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inisialisasi ViewModel
-        ProfileViewModel profileViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
+        ProfileViewModel profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
         // Memuat nama pengguna dari SharedPreferences
-        SharedPreferences sharedPreferences = requireActivity()
-                .getSharedPreferences("login_session", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("login_session", Context.MODE_PRIVATE);
 
         String username = sharedPreferences.getString("username", "Guest");
         Log.d("ProfileFragment", "Username: " + username);
 
         if ("Guest".equals(username)) {
             // Inflate fragment_guest jika user adalah guest
-            Log.d("ProfileFragment", "Inflating fragment_guest");
             View view = inflater.inflate(R.layout.fragment_guest, container, false);
-
 
             // Set up the OnClickListener for the guestLoginButton
             view.findViewById(R.id.guestLoginButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Clear the login session
-                    SharedPreferences sharedPreferences = requireActivity()
-                            .getSharedPreferences("login_session", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("login_session", Context.MODE_PRIVATE);
                     sharedPreferences.edit().clear().apply();
 
                     Intent intent = new Intent(requireContext(), LoginActivity.class);
@@ -85,15 +79,11 @@ public class ProfileFragment extends Fragment {
                     requireActivity().finish();
                 }
             });
-
             return view;
-
         } else{
             // Inflate layout menggunakan ViewBinding
-            Log.d("ProfileFragment", "Inflating fragment_profile");
             binding = FragmentProfileBinding.inflate(inflater, container, false);
             View root = binding.getRoot();
-
             loadProfileData();
 
             // Mengatur listener untuk tombol edit profile
@@ -118,6 +108,11 @@ public class ProfileFragment extends Fragment {
 
             binding.orderHistory.setOnClickListener( v -> {
                 Intent intent = new Intent(requireContext(), com.example.uts_a22202302996.activity.OrderHistoryActivity.class);
+                startActivity(intent);
+            });
+
+            binding.about.setOnClickListener(v -> {
+                Intent intent = new Intent(requireContext(), com.example.uts_a22202302996.activity.AboutActivity.class);
                 startActivity(intent);
             });
 
