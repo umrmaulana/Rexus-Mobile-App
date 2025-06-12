@@ -545,6 +545,4 @@
             app:cornerRadius="16dp"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

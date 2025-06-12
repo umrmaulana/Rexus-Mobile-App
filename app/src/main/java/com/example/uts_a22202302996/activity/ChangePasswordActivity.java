@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     EditText etOld_Password, etPassword, etConfirm_Password;
     Button btnSubmit;
+    ImageView ivBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.tiPassword);
         etConfirm_Password = findViewById(R.id.tiConfirmPassword);
         btnSubmit = findViewById(R.id.btnSubmit);
+        ivBack = findViewById(R.id.ivBack);
+
+        ivBack.setOnClickListener(view -> {
+            onBackPressed();
+        });
 
         btnSubmit.setOnClickListener(view -> {
             String oldPass = etOld_Password.getText().toString().trim();
