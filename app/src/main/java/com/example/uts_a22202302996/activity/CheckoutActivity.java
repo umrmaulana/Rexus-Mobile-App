@@ -5,6 +5,9 @@ import static android.app.ProgressDialog.show;
 import static com.example.uts_a22202302996.util.RupiahFormatter.formatRupiah;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -97,18 +100,19 @@ public class CheckoutActivity extends AppCompatActivity {
         binding = ActivityCheckoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Set up toolbar and back button
+        binding.ivBack.setOnClickListener(v -> onBackPressed());
+
         binding.editAddress.setOnClickListener(v -> {
             Intent intent = new Intent(CheckoutActivity.this, ShippingAddressActivity.class);
             startActivityForResult(intent, 100);
         });
 
+        // Set up close button to hide product list and show checkout items
         binding.ivClose.setOnClickListener(v -> {
             binding.conItemCheckout.setVisibility(View.VISIBLE);
             binding.conProductList.setVisibility(View.GONE);
-
         });
-
-        binding.ivBack.setOnClickListener(v -> onBackPressed());
 
         // Setup shipping services RecyclerView
         shippingServiceAdapter = new ShippingServiceAdapter(this::selectShippingService);
@@ -420,16 +424,35 @@ public class CheckoutActivity extends AppCompatActivity {
             if (checkedId == R.id.rbBri) {
                 selectedPaymentMethod = "bri";
                 selectedPaymentNumber = "331234567890";
+                updatePaymentUI();
             } else if (checkedId == R.id.rbMandiri) {
                 selectedPaymentMethod = "mandiri";
                 selectedPaymentNumber = "1234567890";
+                updatePaymentUI();
             } else if (checkedId == R.id.rbBca) {
                 selectedPaymentMethod = "bca";
                 selectedPaymentNumber = "0987654321";
+                updatePaymentUI();
             } else if (checkedId == R.id.rbCod) {
                 selectedPaymentMethod = "cod";
                 selectedPaymentNumber = null;
+                binding.paymentCardView.setVisibility(View.GONE);
             }
+        });
+    }
+
+    private void updatePaymentUI() {
+        runOnUiThread(()->{
+            binding.paymentCardView.setVisibility(View.VISIBLE);
+            binding.tvBankName.setText(selectedPaymentMethod);
+            binding.tvAccountNumber.setText(selectedPaymentNumber);
+            binding.tvAccountName.setText("Kla Computer");
+            binding.ivCopyAccountNumber.setOnClickListener(v -> {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Account Number", selectedPaymentNumber);
+                clipboard.setPrimaryClip(clip);
+                Toasty.success(CheckoutActivity.this, "Account number copied to clipboard", Toast.LENGTH_SHORT).show();
+            });
         });
     }
 
@@ -657,6 +680,7 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
+    @NonNull
     private Order createOrderObject(int orderId, String orderNumber) {
         Order order = new Order();
         order.setOrderId(orderId);
@@ -703,7 +727,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private String getBankName(String paymentMethod) {
+    private String getBankName(@NonNull String paymentMethod) {
         switch (paymentMethod.toLowerCase()) {
             case "bri": return "BRI";
             case "bca": return "BCA";
