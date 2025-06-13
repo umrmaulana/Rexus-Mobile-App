@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +51,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrderDetailActivity extends AppCompatActivity {
-
     // Views
     private Toolbar toolbar;
     private ImageView ivBack, ivClose;
@@ -387,6 +387,38 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         // Shipping method
         tvShippingMethod.setText(currentOrder.getCourier() + " " + currentOrder.getCourierService());
+
+        if (currentOrder.getPaymentStatus().equalsIgnoreCase("paid")) {
+            tvPaymentStatus.setTextColor(ContextCompat.getColor(this, R.color.success_text));
+        } else {
+            tvPaymentStatus.setTextColor(ContextCompat.getColor(this, R.color.error));
+        }
+
+        switch (currentOrder.getOrderStatus().toLowerCase()){
+            case "pending":
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.primary));
+                break;
+            case "processing":
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.link));
+                break;
+            case "shipped":
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.warning_text));
+                break;
+            case "delivered":
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.success_text));
+                break;
+            case "cancelled":
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.error));
+                break;
+            case "completed":
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.success_text));
+                break;
+            case "failed":
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.error));
+                break;
+            default:
+                tvOrderStatus.setTextColor(ContextCompat.getColor(this, R.color.black));
+        }
 
         // Update shipping info if available
         if (shippingAddress != null) {
