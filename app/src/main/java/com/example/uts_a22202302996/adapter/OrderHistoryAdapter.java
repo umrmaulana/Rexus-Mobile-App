@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +47,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.tvOrderStatus.setText(order.getOrderStatus());
         holder.tvPaymentStatus.setText("Payment: " + order.getPaymentStatus());
         holder.tvShippingInfo.setText(order.getShippingInfo());
-        holder.tvEstimatedDelivery.setText(order.getEstimatedDelivery());
+        holder.tvEstimatedDelivery.setText(order.getEstimatedDelivery()+" Days");
         holder.tvTotalAmount.setText("Total: " + formatRupiah(order.getTotalAmount()));
 
         // Set different colors based on order status
@@ -76,6 +77,26 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
                 holder.tvOrderStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.black));
         }
 
+        switch (order.getPaymentStatus().toLowerCase()) {
+            case "unpaid":
+                holder.tvPaymentStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.error));
+                break;
+            case "paid":
+                holder.tvPaymentStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.success_text));
+                break;
+            case "pending":
+                holder.tvPaymentStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.primary));
+                break;
+            default:
+                holder.tvPaymentStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.black));
+        }
+
+        switch (order.getPaymentMethod().toLowerCase()){
+            case "cod":
+                holder.containerEstimatedDelivery.setVisibility(View.GONE);
+                break;
+        }
+
         holder.btnViewDetails.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(order);
@@ -91,6 +112,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderNumber, tvOrderDate, tvOrderStatus, tvPaymentStatus, tvShippingInfo, tvEstimatedDelivery, tvTotalAmount;
         Button btnViewDetails;
+        LinearLayout containerEstimatedDelivery;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +124,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             tvShippingInfo = itemView.findViewById(R.id.tvShippingInfo);
             tvEstimatedDelivery = itemView.findViewById(R.id.tvEstimatedDelivery);
             btnViewDetails = itemView.findViewById(R.id.btnViewDetails);
+            containerEstimatedDelivery = itemView.findViewById(R.id.containerEstimatedDelivery);
         }
     }
 

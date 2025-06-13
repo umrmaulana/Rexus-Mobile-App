@@ -130,6 +130,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                             order.get("order_number").getAsString(),
                                             formatDate(order.get("created_at").getAsString()),
                                             order.get("order_status").getAsString(),
+                                            order.get("payment_method").getAsString(),
                                             order.get("payment_status").getAsString(),
                                             order.get("courier").getAsString(),
                                             order.get("estimated_day").getAsString(),
