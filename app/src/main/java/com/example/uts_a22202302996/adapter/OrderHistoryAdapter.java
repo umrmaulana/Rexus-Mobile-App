@@ -45,12 +45,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.tvOrderDate.setText("Date: " + order.getOrderDate());
         holder.tvOrderStatus.setText(order.getOrderStatus());
         holder.tvPaymentStatus.setText("Payment: " + order.getPaymentStatus());
+        holder.tvShippingInfo.setText(order.getShippingInfo());
+        holder.tvEstimatedDelivery.setText(order.getEstimatedDelivery());
         holder.tvTotalAmount.setText("Total: " + formatRupiah(order.getTotalAmount()));
 
         // Set different colors based on order status
         switch (order.getOrderStatus().toLowerCase()) {
             case "pending":
-                holder.tvOrderStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.navigation_bar));
+                holder.tvOrderStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.primary));
                 break;
             case "processing":
                 holder.tvOrderStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.link));
@@ -87,7 +89,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderNumber, tvOrderDate, tvOrderStatus, tvPaymentStatus, tvTotalAmount;
+        TextView tvOrderNumber, tvOrderDate, tvOrderStatus, tvPaymentStatus, tvShippingInfo, tvEstimatedDelivery, tvTotalAmount;
         Button btnViewDetails;
 
         public ViewHolder(@NonNull View itemView) {
@@ -97,6 +99,8 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             tvOrderStatus = itemView.findViewById(R.id.tvOrderStatus);
             tvPaymentStatus = itemView.findViewById(R.id.tvPaymentStatus);
             tvTotalAmount = itemView.findViewById(R.id.tvTotalAmount);
+            tvShippingInfo = itemView.findViewById(R.id.tvShippingInfo);
+            tvEstimatedDelivery = itemView.findViewById(R.id.tvEstimatedDelivery);
             btnViewDetails = itemView.findViewById(R.id.btnViewDetails);
         }
     }

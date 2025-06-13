@@ -131,6 +131,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                             formatDate(order.get("created_at").getAsString()),
                                             order.get("order_status").getAsString(),
                                             order.get("payment_status").getAsString(),
+                                            order.get("courier").getAsString(),
+                                            order.get("estimated_day").getAsString(),
                                             order.get("final_price").getAsDouble()
                                     );
                                     orderList.add(history);
