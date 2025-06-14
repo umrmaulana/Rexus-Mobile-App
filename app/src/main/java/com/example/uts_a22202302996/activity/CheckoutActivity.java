@@ -614,8 +614,8 @@ public class CheckoutActivity extends AppCompatActivity {
         orderData.put("estimated_day", selectedDeliveryService);
         orderData.put("total_weight", String.valueOf(calculateTotalWeight()));
         orderData.put("payment_method", selectedPaymentMethod);
-        orderData.put("payment_status", "not_paid");
-        orderData.put("order_status", "pending");
+        orderData.put("payment_status", "Unpaid");
+        orderData.put("order_status", "Pending");
         orderData.put("products", productsData);
 
         // Konversi ke JSON
@@ -645,12 +645,13 @@ public class CheckoutActivity extends AppCompatActivity {
                             );
 
                             if (selectedPaymentMethod.equals("cod")) {
-                                order.setPaymentStatus("paid");
+                                order.setPaymentStatus("Paid");
                                 Intent intent = new Intent(CheckoutActivity.this, OrderDetailActivity.class);
                                 intent.putExtra("order_data", new Gson().toJson(order));
                                 intent.putExtra("order_id", order.getOrderId());
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
+                                finish();
                             } else{
                                 openPaymentDetailActivity(order);
                             }
@@ -695,8 +696,8 @@ public class CheckoutActivity extends AppCompatActivity {
         order.setEstimatedDay(selectedDeliveryService);
         order.setTotalWeight(calculateTotalWeight());
         order.setPaymentMethod(selectedPaymentMethod);
-        order.setPaymentStatus("not_paid");
-        order.setOrderStatus("pending");
+        order.setPaymentStatus("unpaid");
+        order.setOrderStatus("Pending");
         return order;
     }
 

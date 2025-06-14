@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.uts_a22202302996.MainActivity;
 import com.example.uts_a22202302996.R;
 import com.example.uts_a22202302996.adapter.OrderHistoryAdapter;
 import com.example.uts_a22202302996.api.RegisterAPI;
@@ -90,6 +91,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
         intent.putExtra("order_id", order.getId());
         intent.putExtra("order_number", order.getOrderNumber());
         startActivity(intent);
+        finish();
     }
 
     private void loadOrderHistory() {
@@ -187,5 +189,13 @@ public class OrderHistoryActivity extends AppCompatActivity {
         super.onResume();
         // Refresh data when returning to this activity
         loadOrderHistory();
+    }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(OrderHistoryActivity.this, MainActivity.class);
+        intent.putExtra("profile_order_history", "profile");
+        startActivity(intent);
+        finish();
     }
 }

@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Mengatur product dari search
         handleProductIntent();
+
+        // Mengatur order history dari checkout
+        handleOrderHistoryIntent(getIntent());
     }
 
     @Override
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         handleSearchIntent(intent);
+        handleOrderHistoryIntent(intent);
     }
 
     /**
@@ -169,6 +173,13 @@ public class MainActivity extends AppCompatActivity {
                 BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
                 bottomNavigationView.setSelectedItemId(R.id.navigation_product);
             }
+        }
+    }
+
+    private void handleOrderHistoryIntent(Intent intent) {
+        if (intent != null && intent.hasExtra("profile_order_history")) {
+            BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+            bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
         }
     }
 }

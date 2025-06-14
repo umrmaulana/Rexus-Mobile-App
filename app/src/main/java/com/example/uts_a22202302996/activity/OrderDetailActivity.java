@@ -172,7 +172,18 @@ public class OrderDetailActivity extends AppCompatActivity {
                 Toasty.error(OrderDetailActivity.this, "Data pesanan tidak tersedia", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    public void onBackPressed() {
+        if (conProductList.getVisibility() == VISIBLE) {
+            conProductList.setVisibility(GONE);
+            conOderDetail.setVisibility(VISIBLE);
+        } else {
+            Intent intent = new Intent(OrderDetailActivity.this, OrderHistoryActivity.class);
+            startActivity(intent);
+            finish();
+            super.onBackPressed();
+        }
     }
 
     private void openPaymentDetailActivity(Order order) {

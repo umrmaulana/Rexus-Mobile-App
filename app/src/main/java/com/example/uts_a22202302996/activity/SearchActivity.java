@@ -115,11 +115,12 @@ public class SearchActivity extends AppCompatActivity {
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Product> results = response.body().getResult();
-                    if (navigateToHome) {
+                    if (navigateToHome && !results.isEmpty()) {
                         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
                         intent.putExtra("selected_products", new ArrayList<>(results));
                         intent.putExtra("navigate_to", "product");
                         startActivity(intent);
+                        finish();
                     } else {
                         adapter.updateData(results);
                     }
