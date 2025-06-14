@@ -45,7 +45,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.tvOrderNumber.setText("Order #" + order.getOrderNumber());
         holder.tvOrderDate.setText("Date: " + order.getOrderDate());
         holder.tvOrderStatus.setText(order.getOrderStatus());
-        holder.tvPaymentStatus.setText("Payment: " + order.getPaymentStatus());
+        holder.tvPaymentStatus.setText(order.getPaymentMethod() + " | " + order.getPaymentStatus());
         holder.tvShippingInfo.setText(order.getShippingInfo());
         holder.tvEstimatedDelivery.setText(order.getEstimatedDelivery()+" Days");
         holder.tvTotalAmount.setText("Total: " + formatRupiah(order.getTotalAmount()));

@@ -7,8 +7,8 @@ public class OrderHistory {
     private String orderStatus;
     private String paymentMethod;
     private String paymentStatus;
-    private  String shippingInfo;
-    private  String estimatedDelivery;
+    private String shippingInfo;
+    private String estimatedDelivery;
     private double totalAmount;
 
     public OrderHistory(int id, String orderNumber, String orderDate, String orderStatus, String paymentMethod, String paymentStatus, String shippingInfo, String estimatedDelivery, double totalAmount) {
